@@ -1,12 +1,6 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
     await queryInterface.createTable('invoices', {
       id: {
         allowNull: false,
@@ -14,7 +8,7 @@ module.exports = {
         autoIncrement: true,
         type: Sequelize.INTEGER,
       },
-      value: {
+      amount: {
         allowNull: false,
         type: Sequelize.FLOAT,
       },

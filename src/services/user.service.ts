@@ -1,3 +1,4 @@
+import InvoiceModel from '../database/models/invoice.model';
 import PhoneModel from '../database/models/phone.model';
 import PlanModel from '../database/models/plan.model';
 import UserModel from '../database/models/user.model';
@@ -23,6 +24,10 @@ class UserService {
         {
           model: PlanModel,
           as: 'plans',
+        },
+        {
+          model: InvoiceModel,
+          as: 'invoices',
         },
       ],
     });
