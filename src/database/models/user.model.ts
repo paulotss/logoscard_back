@@ -76,7 +76,7 @@ UserModel.init(
 );
 
 UserModel.hasOne(PhoneModel, { as: 'phone', foreignKey: 'id' });
-UserModel.hasMany(InvoiceModel, { as: 'invoices', foreignKey: 'id' });
+UserModel.hasMany(InvoiceModel, { as: 'invoices', foreignKey: 'user_id' });
 
 UserModel.belongsToMany(PlanModel, {
   as: 'plans',
