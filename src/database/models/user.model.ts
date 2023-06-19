@@ -13,6 +13,10 @@ class UserModel extends Model {
 
   declare email: string;
 
+  declare photo: string;
+
+  declare rg: string;
+
   declare cpf: string;
 
   declare password: string;
@@ -37,6 +41,10 @@ UserModel.init(
       type: DataTypes.STRING,
     },
     email: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    photo: {
       allowNull: false,
       type: DataTypes.STRING,
     },
