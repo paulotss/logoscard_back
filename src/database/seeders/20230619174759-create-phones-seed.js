@@ -5,22 +5,27 @@ module.exports = {
       {
         area: '61',
         number: '998585218',
+        user_id: 1,
       },
       {
         area: '61',
         number: '998585218',
+        user_id: 2,
       },
       {
         area: '61',
         number: '998585218',
+        user_id: 3,
       },
       {
         area: '61',
         number: '998585218',
+        user_id: 4,
       },
       {
         area: '61',
         number: '998585218',
+        user_id: 5,
       },
     ]);
   },
