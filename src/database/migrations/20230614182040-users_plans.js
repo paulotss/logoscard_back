@@ -22,12 +22,8 @@ module.exports = {
           key: 'id',
         },
       },
-      created_at: {
+      expiration: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updated_at: {
-        allowNull: true,
         type: Sequelize.DATE,
       },
     });

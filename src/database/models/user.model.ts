@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
 import PlanModel from './plan.model';
+import UserPlanModel from './user_plan.model';
 
 class UserModel extends Model {
   declare id: number;
@@ -61,12 +62,14 @@ UserModel.init(
 );
 
 UserModel.belongsToMany(PlanModel, {
-  through: 'users_plans',
+  as: 'plans',
+  through: UserPlanModel,
   foreignKey: 'user_id',
   otherKey: 'plan_id',
 });
 PlanModel.belongsToMany(UserModel, {
-  through: 'users_plans',
+  as: 'users',
+  through: UserPlanModel,
   foreignKey: 'plan_id',
   otherKey: 'user_id',
 });
