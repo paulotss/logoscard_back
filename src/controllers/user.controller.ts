@@ -15,14 +15,22 @@ class UserController {
   }
 
   public async getAll() {
-    const result = await UserService.getAll();
-    this.response.status(200).json(result);
+    try {
+      const result = await UserService.getAll();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
   }
 
   public async getOne() {
     const { id } = this.request.params;
-    const result = await UserService.getOne(Number(id));
-    this.response.status(200).json(result);
+    try {
+      const result = await UserService.getOne(Number(id));
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
   }
 }
 

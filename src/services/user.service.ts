@@ -2,6 +2,7 @@ import InvoiceModel from '../database/models/invoice.model';
 import PhoneModel from '../database/models/phone.model';
 import PlanModel from '../database/models/plan.model';
 import UserModel from '../database/models/user.model';
+import CustomError from '../utils/CustomError';
 
 class UserService {
   public static async getAll() {
@@ -11,6 +12,7 @@ class UserService {
         as: 'plans',
       },
     });
+    if (!result) throw new CustomError('Not Found', 404);
     return result;
   }
 
@@ -31,6 +33,7 @@ class UserService {
         },
       ],
     });
+    if (!result) throw new CustomError('Not Found', 404);
     return result;
   }
 }
