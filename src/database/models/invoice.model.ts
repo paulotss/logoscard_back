@@ -2,6 +2,8 @@ import { DataTypes, Model } from 'sequelize';
 import db from '.';
 
 class InvoiceModel extends Model {
+  declare id: number;
+
   declare amount: number;
 
   declare expiration: number;

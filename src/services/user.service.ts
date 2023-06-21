@@ -30,6 +30,8 @@ class UserService {
         {
           model: InvoiceModel,
           as: 'invoices',
+          separate: true,
+          order: [['expiration', 'DESC']],
         },
       ],
     });
