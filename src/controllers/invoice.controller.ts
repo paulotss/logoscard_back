@@ -23,6 +23,16 @@ class InvoiceController {
       this.next(error);
     }
   }
+
+  public async pay() {
+    const { invoiceId } = this.request.body;
+    try {
+      const result = await InvoiceService.pay(Number(invoiceId));
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default InvoiceController;

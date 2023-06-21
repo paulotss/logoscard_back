@@ -7,4 +7,8 @@ router.get('/invoice/:id', (req, res, next) =>
   new InvoiceController(req, res, next).getOne(),
 );
 
+router.put('/invoice/pay', (req, res, next) =>
+  new InvoiceController(req, res, next).pay(),
+);
+
 export default router;

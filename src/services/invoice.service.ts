@@ -13,6 +13,12 @@ class InvoiceService {
     if (!result) throw new CustomError('Not Found', 404);
     return result;
   }
+
+  public static async pay(id: number) {
+    const result = await InvoiceModel.update({ paid: 1 }, { where: { id } });
+    if (!result[0]) throw new CustomError('Not Modified', 403);
+    return result;
+  }
 }
 
 export default InvoiceService;
