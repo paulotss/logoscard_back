@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import PlanService from '../services/plan.service';
+import UserPlanService from '../services/usePlan.service';
+import UserService from '../services/user.service';
 
-class PlanController {
+class UserPlanController {
   private request: Request;
 
   private response: Response;
@@ -14,9 +15,11 @@ class PlanController {
     this.next = next;
   }
 
-  public async getAll() {
+  public async removePlan() {
+    const { planId, userId } = this.request.body;
     try {
-      const result = await PlanService.getAll();
+      await UserPlanService.removePlan(Number(planId), Number(userId));
+      const result = await UserService.getOne(userId);
       this.response.status(200).json(result);
     } catch (error) {
       this.next(error);
@@ -24,4 +27,4 @@ class PlanController {
   }
 }
 
-export default PlanController;
+export default UserPlanController;

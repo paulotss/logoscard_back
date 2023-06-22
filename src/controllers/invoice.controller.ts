@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import UserService from '../services/user.service';
+import InvoiceService from '../services/invoice.service';
 
-class UserController {
+class InvoiceController {
   private request: Request;
 
   private response: Response;
@@ -14,19 +14,20 @@ class UserController {
     this.next = next;
   }
 
-  public async getAll() {
+  public async getOne() {
+    const { id } = this.request.params;
     try {
-      const result = await UserService.getAll();
+      const result = await InvoiceService.getOne(Number(id));
       this.response.status(200).json(result);
     } catch (error) {
       this.next(error);
     }
   }
 
-  public async getOne() {
-    const { id } = this.request.params;
+  public async pay() {
+    const { invoiceId } = this.request.body;
     try {
-      const result = await UserService.getOne(Number(id));
+      const result = await InvoiceService.pay(Number(invoiceId));
       this.response.status(200).json(result);
     } catch (error) {
       this.next(error);
@@ -34,4 +35,4 @@ class UserController {
   }
 }
 
-export default UserController;
+export default InvoiceController;
