@@ -46,7 +46,7 @@ UserModel.init(
       type: DataTypes.STRING,
     },
     photo: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
     },
     password: {

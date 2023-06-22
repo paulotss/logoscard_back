@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import UserService from '../services/user.service';
+import IUser from '../interfaces/IUser';
 
 class UserController {
   private request: Request;
@@ -31,6 +32,13 @@ class UserController {
     } catch (error) {
       this.next(error);
     }
+  }
+
+  public async create() {
+    const user: IUser = this.request.body;
+    user.photo = this.request.file?.filename;
+    const result = UserService.create(user);
+    this.response.status(201).json(result);
   }
 }
 
