@@ -39,8 +39,12 @@ class UserController {
     const user: IUser = this.request.body;
     user.photo =
       fileName + extname(this.request.file?.originalname || 'sample.jpg');
-    const result = UserService.create(user);
-    this.response.status(201).json(result);
+    try {
+      const result = await UserService.create(user);
+      this.response.status(201).json(result);
+    } catch (error) {
+      this.next(error);
+    }
   }
 }
 

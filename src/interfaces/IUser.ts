@@ -1,6 +1,7 @@
 interface IUser {
   firstName: string;
   lastName: string;
+  cellPhone: string;
   photo?: string;
   email: string;
   password: string;

@@ -1,5 +1,4 @@
 import InvoiceModel from '../database/models/invoice.model';
-import PhoneModel from '../database/models/phone.model';
 import PlanModel from '../database/models/plan.model';
 import UserModel from '../database/models/user.model';
 import IUser from '../interfaces/IUser';
@@ -21,10 +20,6 @@ class UserService {
     const result = await UserModel.findByPk(id, {
       include: [
         {
-          model: PhoneModel,
-          as: 'phone',
-        },
-        {
           model: PlanModel,
           as: 'plans',
         },
@@ -45,6 +40,7 @@ class UserService {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      cellPhone: user.cellPhone,
       password: user.password,
       photo: user.photo,
       rg: user.rg,
