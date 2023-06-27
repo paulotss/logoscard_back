@@ -12,4 +12,8 @@ router.delete('/plan', (req, res, next) =>
   new UserPlanController(req, res, next).removePlan(),
 );
 
+router.post('/plan/add', (req, res, next) =>
+  new UserPlanController(req, res, next).addPlan(),
+);
+
 export default router;

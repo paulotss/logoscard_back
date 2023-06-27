@@ -2,7 +2,6 @@ import { DataTypes, Model } from 'sequelize';
 import db from '.';
 import PlanModel from './plan.model';
 import UserPlanModel from './user_plan.model';
-import PhoneModel from './phone.model';
 import InvoiceModel from './invoice.model';
 
 class UserModel extends Model {
@@ -13,6 +12,8 @@ class UserModel extends Model {
   declare lastName: string;
 
   declare email: string;
+
+  declare cellPhone: string;
 
   declare photo: string;
 
@@ -45,8 +46,12 @@ UserModel.init(
       allowNull: false,
       type: DataTypes.STRING,
     },
-    photo: {
+    cellPhone: {
       allowNull: false,
+      type: DataTypes.STRING,
+    },
+    photo: {
+      allowNull: true,
       type: DataTypes.STRING,
     },
     password: {
@@ -75,7 +80,6 @@ UserModel.init(
   },
 );
 
-UserModel.hasOne(PhoneModel, { as: 'phone', foreignKey: 'id' });
 UserModel.hasMany(InvoiceModel, { as: 'invoices', foreignKey: 'user_id' });
 InvoiceModel.belongsTo(UserModel, { as: 'user' });
 

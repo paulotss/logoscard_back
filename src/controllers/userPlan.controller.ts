@@ -25,6 +25,20 @@ class UserPlanController {
       this.next(error);
     }
   }
+
+  public async addPlan() {
+    const { planId, userId, expiration } = this.request.body;
+    try {
+      const result = await UserPlanService.addPlan(
+        Number(planId),
+        Number(userId),
+        expiration,
+      );
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default UserPlanController;

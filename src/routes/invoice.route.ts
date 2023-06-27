@@ -11,4 +11,8 @@ router.put('/invoice/pay', (req, res, next) =>
   new InvoiceController(req, res, next).pay(),
 );
 
+router.post('/invoices', (req, res, next) =>
+  new InvoiceController(req, res, next).generateInvoices(),
+);
+
 export default router;
