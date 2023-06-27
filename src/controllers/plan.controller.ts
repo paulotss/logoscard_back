@@ -22,6 +22,16 @@ class PlanController {
       this.next(error);
     }
   }
+
+  public async getById() {
+    const { id } = this.request.params;
+    try {
+      const result = await PlanService.getById(Number(id));
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default PlanController;

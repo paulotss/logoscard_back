@@ -7,6 +7,12 @@ class PlanService {
     if (!result) throw new CustomError('Not Found', 404);
     return result;
   }
+
+  public static async getById(planId: number) {
+    const result = await PlanModel.findByPk(planId);
+    if (!result) throw new CustomError('Not Found', 404);
+    return result;
+  }
 }
 
 export default PlanService;
