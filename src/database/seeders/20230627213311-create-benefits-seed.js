@@ -4,18 +4,23 @@ module.exports = {
     await queryInterface.bulkInsert('benefits', [
       {
         title: 'Teleatendimento médico',
+        description:
+          'Psicologia, massoterapia, clínica média, acupuntura ou nutrição',
         amount: 1,
         used: 1,
         type: 'active',
       },
       {
-        title: 'Teleatendimento médico',
+        title: 'Consulta em especialidades',
+        description:
+          'Psicologia, massoterapia, clínica média, acupuntura ou nutrição',
         amount: 1,
         used: 0,
         type: 'active',
       },
       {
-        title: 'Teleatendimento médico',
+        title: '20% de desconto em atendimentos',
+        description: null,
         amount: null,
         used: null,
         type: 'passive',
