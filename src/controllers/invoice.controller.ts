@@ -33,6 +33,21 @@ class InvoiceController {
       this.next(error);
     }
   }
+
+  public async generateInvoices() {
+    const { parcels, day, userId, totalPrice } = this.request.body;
+    try {
+      const result = await InvoiceService.generateInvoices(
+        Number(parcels),
+        Number(day),
+        Number(userId),
+        Number(totalPrice),
+      );
+      this.response.status(201).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default InvoiceController;

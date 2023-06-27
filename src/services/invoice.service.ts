@@ -19,6 +19,31 @@ class InvoiceService {
     if (!result[0]) throw new CustomError('Not Modified', 403);
     return result;
   }
+
+  public static async generateInvoices(
+    parcels: number,
+    day: number,
+    userId: number,
+    totalPrice: number,
+  ) {
+    const invoices = [];
+    const price = totalPrice / parcels;
+    const expiration = new Date();
+    expiration.setDate(day);
+    for (let i = 1; i < parcels; i += 1) {
+      invoices.push({
+        amount: price,
+        paid: 0,
+        userId,
+        expiration: `${expiration.getFullYear()}-${
+          expiration.getMonth() + 1
+        }-${expiration.getDate()}`,
+      });
+      expiration.setMonth(expiration.getMonth() + 1);
+    }
+    const result = await InvoiceModel.bulkCreate(invoices);
+    return result;
+  }
 }
 
 export default InvoiceService;

@@ -16,4 +16,8 @@ router.get('/plan/:id', (req, res, next) =>
   new PlanController(req, res, next).getById(),
 );
 
+router.post('/plan/add', (req, res, next) =>
+  new UserPlanController(req, res, next).addPlan(),
+);
+
 export default router;
