@@ -8,9 +8,9 @@ PlanBenefitModel.init(
   {
     sequelize: db,
     underscored: true,
-    modelName: 'UserPlanModel',
+    modelName: 'PlanBenefitModel',
     timestamps: false,
-    tableName: 'users_plans',
+    tableName: 'plans_benefits',
   },
 );
 
