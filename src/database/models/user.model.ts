@@ -24,6 +24,8 @@ class UserModel extends Model {
   declare password: string;
 
   declare admin: boolean;
+
+  declare planId: number;
 }
 
 UserModel.init(
@@ -69,6 +71,16 @@ UserModel.init(
     admin: {
       allowNull: false,
       type: DataTypes.BOOLEAN,
+    },
+    planId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'plans',
+        },
+        key: 'id',
+      },
     },
   },
   {
