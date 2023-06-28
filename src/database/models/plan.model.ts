@@ -1,6 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
-import UserModel from './user.model';
 
 class PlanModel extends Model {
   declare id: number;
@@ -35,8 +34,5 @@ PlanModel.init(
     tableName: 'plans',
   },
 );
-
-PlanModel.hasMany(UserModel, { as: 'users', foreignKey: 'planId' });
-UserModel.belongsTo(PlanModel, { as: 'plan' });
 
 export default PlanModel;

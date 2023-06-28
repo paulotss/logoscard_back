@@ -1,19 +1,16 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
+import PlanModel from './plan.model';
 
-class InvoiceModel extends Model {
+class AssignmentsModel extends Model {
   declare id: number;
 
-  declare amount: number;
+  declare expiration: string;
 
-  declare expiration: number;
-
-  declare paid: boolean;
-
-  declare userId: number;
+  declare planId: number;
 }
 
-InvoiceModel.init(
+AssignmentsModel.init(
   {
     id: {
       allowNull: false,
@@ -21,24 +18,18 @@ InvoiceModel.init(
       autoIncrement: true,
       type: DataTypes.INTEGER,
     },
-    amount: {
-      allowNull: false,
-      type: DataTypes.FLOAT,
-    },
+
     expiration: {
       allowNull: false,
       type: DataTypes.DATE,
     },
-    paid: {
-      allowNull: false,
-      type: DataTypes.BOOLEAN,
-    },
-    userId: {
+
+    planId: {
       allowNull: false,
       type: DataTypes.INTEGER,
       references: {
         model: {
-          tableName: 'users',
+          tableName: 'plans',
         },
         key: 'id',
       },
@@ -47,10 +38,16 @@ InvoiceModel.init(
   {
     sequelize: db,
     underscored: true,
-    modelName: 'InvoiceModel',
+    modelName: 'AssignmentModel',
     timestamps: false,
-    tableName: 'invoices',
+    tableName: 'assignments',
   },
 );
 
-export default InvoiceModel;
+PlanModel.hasMany(AssignmentsModel, {
+  as: 'assignments',
+  foreignKey: 'planId',
+});
+AssignmentsModel.belongsTo(PlanModel, { as: 'plan' });
+
+export default AssignmentsModel;

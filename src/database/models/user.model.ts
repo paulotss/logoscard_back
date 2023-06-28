@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
 import InvoiceModel from './invoice.model';
+import AssignmentsModel from './assignments.model';
 
 class UserModel extends Model {
   declare id: number;
@@ -22,8 +23,6 @@ class UserModel extends Model {
   declare password: string;
 
   declare admin: boolean;
-
-  declare planId: number;
 }
 
 UserModel.init(
@@ -70,16 +69,6 @@ UserModel.init(
       allowNull: false,
       type: DataTypes.BOOLEAN,
     },
-    planId: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
-      references: {
-        model: {
-          tableName: 'plans',
-        },
-        key: 'id',
-      },
-    },
   },
   {
     sequelize: db,
@@ -90,7 +79,9 @@ UserModel.init(
   },
 );
 
-UserModel.hasMany(InvoiceModel, { as: 'invoices', foreignKey: 'user_id' });
+UserModel.hasOne(AssignmentsModel, { as: 'assignment', foreignKey: 'userId' });
+
+UserModel.hasMany(InvoiceModel, { as: 'invoices', foreignKey: 'userId' });
 InvoiceModel.belongsTo(UserModel, { as: 'user' });
 
 export default UserModel;

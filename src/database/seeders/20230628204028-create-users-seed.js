@@ -12,7 +12,6 @@ module.exports = {
         rg: '2481942',
         password: '123456',
         admin: 1,
-        plan_id: 1,
       },
       {
         first_name: 'Fulanob',
@@ -24,7 +23,6 @@ module.exports = {
         rg: '2481942',
         password: '123456',
         admin: 0,
-        plan_id: 1,
       },
       {
         first_name: 'Fulanoc',
@@ -36,7 +34,6 @@ module.exports = {
         rg: '2481942',
         password: '123456',
         admin: 0,
-        plan_id: 1,
       },
       {
         first_name: 'Fulanod',
@@ -48,7 +45,6 @@ module.exports = {
         rg: '2481942',
         password: '123456',
         admin: 0,
-        plan_id: 1,
       },
       {
         first_name: 'Fulanoe',
@@ -60,7 +56,6 @@ module.exports = {
         rg: '2481942',
         password: '123456',
         admin: 0,
-        plan_id: 1,
       },
     ]);
   },
