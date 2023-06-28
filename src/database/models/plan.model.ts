@@ -36,7 +36,7 @@ PlanModel.init(
   },
 );
 
-PlanModel.hasMany(UserModel, { as: 'users', foreignKey: 'plan_id' });
+PlanModel.hasMany(UserModel, { as: 'users', foreignKey: 'planId' });
 UserModel.belongsTo(PlanModel, { as: 'plan' });
 
 export default PlanModel;
