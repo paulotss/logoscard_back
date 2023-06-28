@@ -9,7 +9,7 @@ class UserService {
     const result = await UserModel.findAll({
       include: {
         model: PlanModel,
-        as: 'plans',
+        as: 'plan',
       },
     });
     if (!result) throw new CustomError('Not Found', 404);
@@ -21,7 +21,7 @@ class UserService {
       include: [
         {
           model: PlanModel,
-          as: 'plans',
+          as: 'plan',
         },
         {
           model: InvoiceModel,
