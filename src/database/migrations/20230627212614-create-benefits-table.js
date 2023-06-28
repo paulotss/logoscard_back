@@ -16,17 +16,23 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
+      type: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       amount: {
         allowNull: true,
         type: Sequelize.INTEGER,
       },
-      used: {
-        allowNull: true,
-        type: Sequelize.INTEGER,
-      },
-      type: {
+      plan_id: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'plans',
+          },
+          key: 'id',
+        },
       },
     });
   },

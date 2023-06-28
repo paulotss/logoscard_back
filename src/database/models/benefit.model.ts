@@ -1,7 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
 import PlanModel from './plan.model';
-import PlanBenefitModel from './plan_benefit.model';
 
 class BenefitModel extends Model {
   declare id: number;
@@ -10,11 +9,11 @@ class BenefitModel extends Model {
 
   declare description: string;
 
+  declare type: string;
+
   declare amount: number;
 
-  declare used: number;
-
-  declare type: string;
+  declare planId: number;
 }
 
 BenefitModel.init(
@@ -33,17 +32,23 @@ BenefitModel.init(
       allowNull: true,
       type: DataTypes.STRING,
     },
+    type: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
     amount: {
       allowNull: true,
       type: DataTypes.INTEGER,
     },
-    used: {
+    planId: {
       allowNull: true,
       type: DataTypes.INTEGER,
-    },
-    type: {
-      allowNull: false,
-      type: DataTypes.STRING,
+      references: {
+        model: {
+          tableName: 'plans',
+        },
+        key: 'id',
+      },
     },
   },
   {
@@ -55,17 +60,7 @@ BenefitModel.init(
   },
 );
 
-BenefitModel.belongsToMany(PlanModel, {
-  as: 'plans',
-  through: PlanBenefitModel,
-  foreignKey: 'benefit_id',
-  otherKey: 'plan_id',
-});
-PlanModel.belongsToMany(BenefitModel, {
-  as: 'benefits',
-  through: PlanBenefitModel,
-  foreignKey: 'plan_id',
-  otherKey: 'benefit_id',
-});
+PlanModel.hasMany(BenefitModel, { as: 'benefits', foreignKey: 'plan_id' });
+BenefitModel.belongsTo(PlanModel, { as: 'plan' });
 
 export default BenefitModel;

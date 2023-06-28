@@ -6,24 +6,24 @@ module.exports = {
         title: 'Teleatendimento médico',
         description:
           'Psicologia, massoterapia, clínica média, acupuntura ou nutrição',
-        amount: 1,
-        used: 1,
         type: 'active',
+        amount: 1,
+        plan_id: 1,
       },
       {
         title: 'Consulta em especialidades',
         description:
           'Psicologia, massoterapia, clínica média, acupuntura ou nutrição',
-        amount: 1,
-        used: 0,
         type: 'active',
+        amount: 1,
+        plan_id: 1,
       },
       {
         title: '20% de desconto em atendimentos',
         description: null,
-        amount: null,
-        used: null,
         type: 'passive',
+        amount: null,
+        plan_id: 1,
       },
     ]);
   },
