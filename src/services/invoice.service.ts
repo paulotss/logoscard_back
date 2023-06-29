@@ -30,7 +30,7 @@ class InvoiceService {
     const price = totalPrice / parcels;
     const expiration = new Date();
     expiration.setDate(day);
-    for (let i = 1; i < parcels; i += 1) {
+    for (let i = 1; i <= parcels; i += 1) {
       invoices.push({
         amount: price,
         paid: 0,
