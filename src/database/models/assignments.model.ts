@@ -7,6 +7,8 @@ class AssignmentsModel extends Model {
 
   declare expiration: string;
 
+  declare paid: number;
+
   declare planId: number;
 
   declare userId: number;
@@ -24,6 +26,11 @@ AssignmentsModel.init(
     expiration: {
       allowNull: false,
       type: DataTypes.DATE,
+    },
+
+    paid: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
     },
 
     planId: {

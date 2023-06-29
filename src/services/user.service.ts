@@ -1,5 +1,6 @@
 import AssignmentsModel from '../database/models/assignments.model';
 import InvoiceModel from '../database/models/invoice.model';
+import PlanModel from '../database/models/plan.model';
 import UserModel from '../database/models/user.model';
 import IUser from '../interfaces/IUser';
 import CustomError from '../utils/CustomError';
@@ -22,6 +23,12 @@ class UserService {
         {
           model: AssignmentsModel,
           as: 'assignment',
+          include: [
+            {
+              model: PlanModel,
+              as: 'plan',
+            },
+          ],
         },
         {
           model: InvoiceModel,

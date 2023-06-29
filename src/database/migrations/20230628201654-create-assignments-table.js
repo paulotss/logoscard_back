@@ -12,6 +12,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      paid: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
       plan_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
