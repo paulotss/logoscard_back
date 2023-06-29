@@ -68,12 +68,12 @@ AssignmentsModel.belongsTo(PlanModel, { as: 'plan' });
 AssignmentsModel.belongsToMany(BenefitModel, {
   through: AssignmentsBenefitsModel,
   as: 'benefits',
-  foreignKey: 'benefitId',
+  foreignKey: 'assignmentId',
 });
 BenefitModel.belongsToMany(AssignmentsModel, {
   through: AssignmentsBenefitsModel,
   as: 'assignments',
-  foreignKey: 'assignmentId',
+  foreignKey: 'benefitId',
 });
 
 export default AssignmentsModel;
