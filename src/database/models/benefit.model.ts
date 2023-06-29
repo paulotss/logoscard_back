@@ -60,7 +60,7 @@ BenefitModel.init(
   },
 );
 
-PlanModel.hasMany(BenefitModel, { as: 'benefits', foreignKey: 'plan_id' });
+PlanModel.hasMany(BenefitModel, { as: 'benefits', foreignKey: 'planId' });
 BenefitModel.belongsTo(PlanModel, { as: 'plan' });
 
 export default BenefitModel;

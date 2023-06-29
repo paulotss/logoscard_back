@@ -1,4 +1,5 @@
 import AssignmentsModel from '../database/models/assignments.model';
+import BenefitModel from '../database/models/benefit.model';
 import InvoiceModel from '../database/models/invoice.model';
 import PlanModel from '../database/models/plan.model';
 import UserModel from '../database/models/user.model';
@@ -27,6 +28,10 @@ class UserService {
             {
               model: PlanModel,
               as: 'plan',
+            },
+            {
+              model: BenefitModel,
+              as: 'benefits',
             },
           ],
         },

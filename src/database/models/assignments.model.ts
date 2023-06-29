@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
 import PlanModel from './plan.model';
+import BenefitModel from './benefit.model';
+import AssignmentsBenefitsModel from './assignments.benefits.model';
 
 class AssignmentsModel extends Model {
   declare id: number;
@@ -62,5 +64,16 @@ PlanModel.hasMany(AssignmentsModel, {
   foreignKey: 'planId',
 });
 AssignmentsModel.belongsTo(PlanModel, { as: 'plan' });
+
+AssignmentsModel.belongsToMany(BenefitModel, {
+  through: AssignmentsBenefitsModel,
+  as: 'benefits',
+  foreignKey: 'benefitId',
+});
+BenefitModel.belongsToMany(AssignmentsModel, {
+  through: AssignmentsBenefitsModel,
+  as: 'assignments',
+  foreignKey: 'assignmentId',
+});
 
 export default AssignmentsModel;
