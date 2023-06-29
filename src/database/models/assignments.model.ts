@@ -8,6 +8,8 @@ class AssignmentsModel extends Model {
   declare expiration: string;
 
   declare planId: number;
+
+  declare userId: number;
 }
 
 AssignmentsModel.init(
@@ -30,6 +32,17 @@ AssignmentsModel.init(
       references: {
         model: {
           tableName: 'plans',
+        },
+        key: 'id',
+      },
+    },
+
+    userId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'users',
         },
         key: 'id',
       },
