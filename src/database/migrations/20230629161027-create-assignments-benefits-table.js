@@ -3,7 +3,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('assignments_benefits', {
       amount: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.INTEGER,
       },
 

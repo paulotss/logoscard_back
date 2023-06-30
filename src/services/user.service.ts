@@ -28,6 +28,12 @@ class UserService {
             {
               model: PlanModel,
               as: 'plan',
+              include: [
+                {
+                  model: BenefitModel,
+                  as: 'benefits',
+                },
+              ],
             },
             {
               model: BenefitModel,

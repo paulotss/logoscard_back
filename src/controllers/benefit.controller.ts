@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import BenefitService from '../services/benefit.service';
+import TAssignmentBenefit from '../types/TAssignmentBenefit';
 
 class BenefitController {
   private request: Request;
@@ -15,13 +16,9 @@ class BenefitController {
   }
 
   public async addBenefitToAssignment() {
-    const { amount, benefitId, assignmentId } = this.request.body;
+    const payload: TAssignmentBenefit[] = this.request.body;
     try {
-      const result = await BenefitService.addBenefitToAssignment(
-        Number(amount),
-        Number(benefitId),
-        Number(assignmentId),
-      );
+      const result = await BenefitService.addBenefitToAssignment(payload);
       this.response.status(201).json(result);
     } catch (error) {
       this.next(error);

@@ -1,16 +1,9 @@
 import AssignmentsBenefitsModel from '../database/models/assignments.benefits.model';
+import TAssignmentBenefit from '../types/TAssignmentBenefit';
 
 class BenefitService {
-  public static async addBenefitToAssignment(
-    amount: number,
-    benefitId: number,
-    assignmentId: number,
-  ) {
-    const result = await AssignmentsBenefitsModel.create({
-      amount,
-      benefitId,
-      assignmentId,
-    });
+  public static async addBenefitToAssignment(payload: TAssignmentBenefit[]) {
+    const result = await AssignmentsBenefitsModel.bulkCreate(payload);
     return result;
   }
 }

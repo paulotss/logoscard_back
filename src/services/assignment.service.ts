@@ -1,5 +1,6 @@
 import AssignmentsModel from '../database/models/assignments.model';
 import CustomError from '../utils/CustomError';
+import UserService from './user.service';
 
 class AssignmentService {
   public static async create(
@@ -7,14 +8,12 @@ class AssignmentService {
     userId: number,
     expiration: string,
   ) {
-    const result = await AssignmentsModel.create({
+    await AssignmentsModel.create({
       expiration,
-      // expiration: `${new Date().getFullYear() + 1}-${
-      //   new Date().getMonth() + 1
-      // }-${new Date().getDate()}`,
       planId,
       userId,
     });
+    const result = await UserService.getOne(userId);
     return result;
   }
 

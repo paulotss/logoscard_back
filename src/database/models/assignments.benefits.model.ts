@@ -12,7 +12,7 @@ class AssignmentsBenefitsModel extends Model {
 AssignmentsBenefitsModel.init(
   {
     amount: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.INTEGER,
     },
 
