@@ -36,6 +36,12 @@ InvoiceModel.init(
     userId: {
       allowNull: false,
       type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'users',
+        },
+        key: 'id',
+      },
     },
   },
   {

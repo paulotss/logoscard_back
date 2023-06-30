@@ -1,3 +1,5 @@
+import AssignmentsModel from '../database/models/assignments.model';
+import BenefitModel from '../database/models/benefit.model';
 import InvoiceModel from '../database/models/invoice.model';
 import PlanModel from '../database/models/plan.model';
 import UserModel from '../database/models/user.model';
@@ -8,8 +10,8 @@ class UserService {
   public static async getAll() {
     const result = await UserModel.findAll({
       include: {
-        model: PlanModel,
-        as: 'plans',
+        model: AssignmentsModel,
+        as: 'assignment',
       },
     });
     if (!result) throw new CustomError('Not Found', 404);
@@ -20,8 +22,24 @@ class UserService {
     const result = await UserModel.findByPk(id, {
       include: [
         {
-          model: PlanModel,
-          as: 'plans',
+          model: AssignmentsModel,
+          as: 'assignment',
+          include: [
+            {
+              model: PlanModel,
+              as: 'plan',
+              include: [
+                {
+                  model: BenefitModel,
+                  as: 'benefits',
+                },
+              ],
+            },
+            {
+              model: BenefitModel,
+              as: 'benefits',
+            },
+          ],
         },
         {
           model: InvoiceModel,

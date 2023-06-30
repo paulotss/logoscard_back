@@ -1,8 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
-import PlanModel from './plan.model';
-import UserPlanModel from './user_plan.model';
 import InvoiceModel from './invoice.model';
+import AssignmentsModel from './assignments.model';
 
 class UserModel extends Model {
   declare id: number;
@@ -80,20 +79,9 @@ UserModel.init(
   },
 );
 
-UserModel.hasMany(InvoiceModel, { as: 'invoices', foreignKey: 'user_id' });
-InvoiceModel.belongsTo(UserModel, { as: 'user' });
+UserModel.hasOne(AssignmentsModel, { as: 'assignment', foreignKey: 'userId' });
 
-UserModel.belongsToMany(PlanModel, {
-  as: 'plans',
-  through: UserPlanModel,
-  foreignKey: 'user_id',
-  otherKey: 'plan_id',
-});
-PlanModel.belongsToMany(UserModel, {
-  as: 'users',
-  through: UserPlanModel,
-  foreignKey: 'plan_id',
-  otherKey: 'user_id',
-});
+UserModel.hasMany(InvoiceModel, { as: 'invoices', foreignKey: 'userId' });
+InvoiceModel.belongsTo(UserModel, { as: 'user' });
 
 export default UserModel;
