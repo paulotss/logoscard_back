@@ -55,6 +55,17 @@ class InvoiceService {
     );
     return result;
   }
+
+  public static async getTotalPending() {
+    const pendingInvoices = await InvoiceModel.findAll({
+      where: { paid: 0 },
+    });
+    const result = pendingInvoices.reduce(
+      (acc, invoice) => acc + invoice.amount,
+      0,
+    );
+    return result;
+  }
 }
 
 export default InvoiceService;

@@ -57,6 +57,15 @@ class InvoiceController {
       this.next(error);
     }
   }
+
+  public async getTotalPending() {
+    try {
+      const result = await InvoiceService.getTotalPending();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default InvoiceController;

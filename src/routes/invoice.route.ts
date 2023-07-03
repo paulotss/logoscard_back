@@ -19,4 +19,8 @@ router.get('/invoices/total/paid', (req, res, next) =>
   new InvoiceController(req, res, next).getTotalPaid(),
 );
 
+router.get('/invoices/total/pending', (req, res, next) =>
+  new InvoiceController(req, res, next).getTotalPending(),
+);
+
 export default router;
