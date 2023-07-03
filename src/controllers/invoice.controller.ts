@@ -48,6 +48,15 @@ class InvoiceController {
       this.next(error);
     }
   }
+
+  public async getTotalPaid() {
+    try {
+      const result = await InvoiceService.getTotalPaid();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default InvoiceController;

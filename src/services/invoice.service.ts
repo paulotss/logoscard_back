@@ -44,6 +44,17 @@ class InvoiceService {
     const result = await InvoiceModel.bulkCreate(invoices);
     return result;
   }
+
+  public static async getTotalPaid() {
+    const paidInvoices = await InvoiceModel.findAll({
+      where: { paid: 1 },
+    });
+    const result = paidInvoices.reduce(
+      (acc, invoice) => acc + invoice.amount,
+      0,
+    );
+    return result;
+  }
 }
 
 export default InvoiceService;

@@ -15,4 +15,8 @@ router.post('/invoices', (req, res, next) =>
   new InvoiceController(req, res, next).generateInvoices(),
 );
 
+router.get('/invoices/total/paid', (req, res, next) =>
+  new InvoiceController(req, res, next).getTotalPaid(),
+);
+
 export default router;
