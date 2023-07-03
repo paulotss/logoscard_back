@@ -23,4 +23,8 @@ router.get('/invoices/total/pending', (req, res, next) =>
   new InvoiceController(req, res, next).getTotalPending(),
 );
 
+router.get('/invoices/total/overdue', (req, res, next) =>
+  new InvoiceController(req, res, next).getTotalOverdue(),
+);
+
 export default router;

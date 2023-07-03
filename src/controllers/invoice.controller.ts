@@ -66,6 +66,15 @@ class InvoiceController {
       this.next(error);
     }
   }
+
+  public async getTotalOverdue() {
+    try {
+      const result = await InvoiceService.getTotalOverdue();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default InvoiceController;

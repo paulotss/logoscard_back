@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import InvoiceModel from '../database/models/invoice.model';
 import UserModel from '../database/models/user.model';
 import CustomError from '../utils/CustomError';
@@ -61,6 +62,24 @@ class InvoiceService {
       where: { paid: 0 },
     });
     const result = pendingInvoices.reduce(
+      (acc, invoice) => acc + invoice.amount,
+      0,
+    );
+    return result;
+  }
+
+  public static async getTotalOverdue() {
+    const overdueInvoices = await InvoiceModel.findAll({
+      where: {
+        paid: 0,
+        expiration: {
+          [Op.lt]: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()}`,
+        },
+      },
+    });
+    const result = overdueInvoices.reduce(
       (acc, invoice) => acc + invoice.amount,
       0,
     );
