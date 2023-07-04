@@ -48,6 +48,33 @@ class InvoiceController {
       this.next(error);
     }
   }
+
+  public async getTotalPaid() {
+    try {
+      const result = await InvoiceService.getTotalPaid();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
+  public async getTotalPending() {
+    try {
+      const result = await InvoiceService.getTotalPending();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
+  public async getTotalOverdue() {
+    try {
+      const result = await InvoiceService.getTotalOverdue();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default InvoiceController;

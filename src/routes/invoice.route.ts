@@ -15,4 +15,16 @@ router.post('/invoices', (req, res, next) =>
   new InvoiceController(req, res, next).generateInvoices(),
 );
 
+router.get('/invoices/total/paid', (req, res, next) =>
+  new InvoiceController(req, res, next).getTotalPaid(),
+);
+
+router.get('/invoices/total/pending', (req, res, next) =>
+  new InvoiceController(req, res, next).getTotalPending(),
+);
+
+router.get('/invoices/total/overdue', (req, res, next) =>
+  new InvoiceController(req, res, next).getTotalOverdue(),
+);
+
 export default router;
