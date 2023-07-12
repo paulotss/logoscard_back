@@ -69,9 +69,13 @@ class UserService {
     return result;
   }
 
-  public static async userLogin(email: string, password: string) {
+  public static async userLogin(
+    email: string,
+    password: string,
+    admin: boolean,
+  ) {
     const user = await UserModel.findOne({
-      where: { email },
+      where: { email, admin },
     });
     if (!user) throw new CustomError('Not found', 404);
     if (user.password !== password)

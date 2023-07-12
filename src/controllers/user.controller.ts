@@ -48,9 +48,9 @@ class UserController {
   }
 
   public async userLogin() {
-    const { email, password } = this.request.body;
+    const { email, password, admin } = this.request.body;
     try {
-      const result = await UserService.userLogin(email, password);
+      const result = await UserService.userLogin(email, password, admin);
       this.response.status(200).json(result);
     } catch (error) {
       this.next(error);
