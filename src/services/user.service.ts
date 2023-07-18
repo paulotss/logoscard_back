@@ -5,6 +5,7 @@ import PlanModel from '../database/models/plan.model';
 import UserModel from '../database/models/user.model';
 import IUser from '../interfaces/IUser';
 import CustomError from '../utils/CustomError';
+import JwtToken from '../utils/JwtToken';
 
 class UserService {
   public static async getAll() {
@@ -66,6 +67,21 @@ class UserService {
       admin: 0,
     });
     return result;
+  }
+
+  public static async userLogin(
+    email: string,
+    password: string,
+    admin: boolean,
+  ) {
+    const user = await UserModel.findOne({
+      where: { email, admin },
+    });
+    if (!user) throw new CustomError('Not found', 404);
+    if (user.password !== password)
+      throw new CustomError('Wrong password', 401);
+    const jwt = new JwtToken();
+    return jwt.generateToken(user.email);
   }
 }
 
