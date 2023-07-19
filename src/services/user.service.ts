@@ -10,6 +10,9 @@ import JwtToken from '../utils/JwtToken';
 class UserService {
   public static async getAll() {
     const result = await UserModel.findAll({
+      where: {
+        admin: false,
+      },
       include: {
         model: AssignmentsModel,
         as: 'assignment',
