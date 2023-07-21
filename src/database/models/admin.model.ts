@@ -6,6 +6,8 @@ class AdminModel extends Model {
   declare id: number;
 
   declare userId: number;
+
+  declare user: UserModel;
 }
 
 AdminModel.init(
@@ -35,6 +37,6 @@ AdminModel.init(
   },
 );
 
-AdminModel.belongsTo(UserModel);
+AdminModel.belongsTo(UserModel, { as: 'user' });
 
 export default AdminModel;

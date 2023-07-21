@@ -21,8 +21,6 @@ class UserModel extends Model {
   declare cpf: string;
 
   declare password: string;
-
-  declare admin: boolean;
 }
 
 UserModel.init(
@@ -64,10 +62,6 @@ UserModel.init(
     cpf: {
       allowNull: false,
       type: DataTypes.STRING,
-    },
-    admin: {
-      allowNull: false,
-      type: DataTypes.BOOLEAN,
     },
   },
   {

@@ -21,8 +21,4 @@ router.post(
     new UserController(req, res, next).create(multerStorage.getName()),
 );
 
-router.post('/login', (req, res, next) =>
-  new UserController(req, res, next).userLogin(),
-);
-
 export default router;
