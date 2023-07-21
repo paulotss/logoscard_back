@@ -35,6 +35,6 @@ ClientModel.init(
   },
 );
 
-ClientModel.belongsTo(UserModel);
+ClientModel.belongsTo(UserModel, { as: 'user' });
 
 export default ClientModel;
