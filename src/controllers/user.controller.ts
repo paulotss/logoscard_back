@@ -35,6 +35,19 @@ class UserController {
     }
   }
 
+  public async createDependent() {
+    const { user, assignmentId } = this.request.body;
+    try {
+      const result = await UserService.createDependent(
+        user,
+        Number(assignmentId),
+      );
+      this.response.status(201).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
   public async create(fileName: string) {
     const user: IUser = this.request.body;
     user.photo =

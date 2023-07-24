@@ -6,6 +6,18 @@ import UserModel from '../database/models/user.model';
 import IUser from '../interfaces/IUser';
 import CustomError from '../utils/CustomError';
 import JwtToken from '../utils/JwtToken';
+import DependentService from './dependent.service';
+
+type UserType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  cellPhone: string;
+  password: string;
+  photo?: string;
+  rg: string;
+  cpf: string;
+};
 
 class UserService {
   public static async getAll() {
@@ -54,6 +66,12 @@ class UserService {
       ],
     });
     if (!result) throw new CustomError('Not Found', 404);
+    return result;
+  }
+
+  public static async createDependent(user: UserType, assignmentId: number) {
+    const newUser = await UserModel.create({ ...user });
+    const result = await DependentService.create(newUser.id, assignmentId);
     return result;
   }
 
