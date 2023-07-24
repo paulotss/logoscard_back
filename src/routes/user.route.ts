@@ -22,7 +22,7 @@ router.post(
 );
 
 router.post('/user/dependent', (req, res, next) =>
-  new UserController(req, res, next).createDependent(),
+  new UserController(req, res, next).createBulkDependent(),
 );
 
 export default router;

@@ -8,15 +8,18 @@ import CustomError from '../utils/CustomError';
 import JwtToken from '../utils/JwtToken';
 import DependentService from './dependent.service';
 
-type UserType = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  cellPhone: string;
-  password: string;
-  photo?: string;
-  rg: string;
-  cpf: string;
+type DependentUserType = {
+  user: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    cellPhone: string;
+    password: string;
+    photo?: string;
+    rg: string;
+    cpf: string;
+  };
+  assignmentId: number;
 };
 
 class UserService {
@@ -69,9 +72,14 @@ class UserService {
     return result;
   }
 
-  public static async createDependent(user: UserType, assignmentId: number) {
-    const newUser = await UserModel.create({ ...user });
-    const result = await DependentService.create(newUser.id, assignmentId);
+  public static async createBulkDependent(data: DependentUserType[]) {
+    const users = data.map(d => d.user);
+    const newUsers = await UserModel.bulkCreate(users);
+    const dependents = newUsers.map((u, index) => ({
+      userId: u.id,
+      assignmentId: data[index].assignmentId,
+    }));
+    const result = await DependentService.createBulk(dependents);
     return result;
   }
 

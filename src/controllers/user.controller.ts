@@ -35,13 +35,10 @@ class UserController {
     }
   }
 
-  public async createDependent() {
-    const { user, assignmentId } = this.request.body;
+  public async createBulkDependent() {
+    const data = this.request.body;
     try {
-      const result = await UserService.createDependent(
-        user,
-        Number(assignmentId),
-      );
+      const result = await UserService.createBulkDependent(data);
       this.response.status(201).json(result);
     } catch (error) {
       this.next(error);
