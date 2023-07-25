@@ -1,5 +1,6 @@
 import AssignmentsModel from '../database/models/assignments.model';
 import BenefitModel from '../database/models/benefit.model';
+import DependentModel from '../database/models/dependent.model';
 import InvoiceModel from '../database/models/invoice.model';
 import PlanModel from '../database/models/plan.model';
 import UserModel from '../database/models/user.model';
@@ -57,6 +58,16 @@ class UserService {
             {
               model: BenefitModel,
               as: 'benefits',
+            },
+            {
+              model: DependentModel,
+              as: 'dependents',
+              include: [
+                {
+                  model: UserModel,
+                  as: 'user',
+                },
+              ],
             },
           ],
         },

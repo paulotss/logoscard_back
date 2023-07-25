@@ -10,6 +10,7 @@ module.exports = {
       },
       user_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: {
             tableName: 'users',
@@ -19,6 +20,7 @@ module.exports = {
       },
       assignment_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: {
             tableName: 'assignments',

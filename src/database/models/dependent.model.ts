@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import db from '.';
 import UserModel from './user.model';
+import AssignmentsModel from './assignments.model';
 
 class DependentModel extends Model {
   declare id: number;
@@ -20,6 +21,7 @@ DependentModel.init(
     },
     userId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: {
           tableName: 'users',
@@ -29,6 +31,7 @@ DependentModel.init(
     },
     assignmentId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: {
           tableName: 'assignments',
@@ -46,6 +49,14 @@ DependentModel.init(
   },
 );
 
-DependentModel.belongsTo(UserModel);
+DependentModel.belongsTo(UserModel, { as: 'user' });
+DependentModel.belongsTo(AssignmentsModel, {
+  as: 'assignments',
+  foreignKey: 'assignment_id',
+});
+AssignmentsModel.hasMany(DependentModel, {
+  as: 'dependents',
+  foreignKey: 'assignment_id',
+});
 
 export default DependentModel;
