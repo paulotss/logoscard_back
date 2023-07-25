@@ -1,5 +1,8 @@
+import AssignmentsModel from '../database/models/assignments.model';
 import DependentModel from '../database/models/dependent.model';
 import UserModel from '../database/models/user.model';
+import PlanModel from '../database/models/plan.model';
+import BenefitModel from '../database/models/benefit.model';
 
 type DependentType = {
   userId: number;
@@ -21,6 +24,26 @@ class DependentService {
         {
           model: UserModel,
           as: 'user',
+        },
+        {
+          model: AssignmentsModel,
+          as: 'assignments',
+          include: [
+            {
+              model: PlanModel,
+              as: 'plan',
+              include: [
+                {
+                  model: BenefitModel,
+                  as: 'benefits',
+                },
+              ],
+            },
+            {
+              model: BenefitModel,
+              as: 'benefits',
+            },
+          ],
         },
       ],
     });
