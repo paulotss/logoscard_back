@@ -8,6 +8,7 @@ import assignmentRouter from './routes/assignment.route';
 import benefitRouter from './routes/benefit.route';
 import adminRouter from './routes/admin.route';
 import clientRouter from './routes/client.route';
+import dependentRouter from './routes/dependent.route';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(assignmentRouter);
 app.use(benefitRouter);
 app.use(adminRouter);
 app.use(clientRouter);
+app.use(dependentRouter);
 
 app.use(ErrorHandle.handle);
 
