@@ -35,11 +35,12 @@ class InvoiceController {
   }
 
   public async generateInvoices() {
-    const { parcels, day, userId, totalPrice } = this.request.body;
+    const { parcels, day, userId, totalPrice, method } = this.request.body;
     try {
       const result = await InvoiceService.generateInvoices(
         Number(parcels),
         Number(day),
+        method,
         Number(userId),
         Number(totalPrice),
       );

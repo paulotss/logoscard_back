@@ -23,6 +23,15 @@ class DependentController {
       this.next(error);
     }
   }
+
+  public async getAll() {
+    try {
+      const result = await DependentService.getAll();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default DependentController;

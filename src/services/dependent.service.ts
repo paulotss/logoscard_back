@@ -15,6 +15,18 @@ class DependentService {
     return result;
   }
 
+  public static async getAll() {
+    const result = await DependentModel.findAll({
+      include: [
+        {
+          model: UserModel,
+          as: 'user',
+        },
+      ],
+    });
+    return result;
+  }
+
   public static async getOne(dependentId: number) {
     const result = await DependentModel.findOne({
       where: {

@@ -24,6 +24,7 @@ class InvoiceService {
   public static async generateInvoices(
     parcels: number,
     day: number,
+    method: string,
     userId: number,
     totalPrice: number,
   ) {
@@ -35,6 +36,7 @@ class InvoiceService {
       invoices.push({
         amount: price,
         paid: 0,
+        method,
         userId,
         expiration: `${expiration.getFullYear()}-${
           expiration.getMonth() + 1
