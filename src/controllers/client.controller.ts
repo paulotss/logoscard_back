@@ -22,6 +22,15 @@ class ClientController {
       this.next(error);
     }
   }
+
+  public async getTotal() {
+    try {
+      const result = await ClientService.getTotal();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default ClientController;

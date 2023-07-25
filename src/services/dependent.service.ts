@@ -27,6 +27,11 @@ class DependentService {
     return result;
   }
 
+  public static async getTotal() {
+    const result = await DependentModel.count();
+    return result;
+  }
+
   public static async getOne(dependentId: number) {
     const result = await DependentModel.findOne({
       where: {

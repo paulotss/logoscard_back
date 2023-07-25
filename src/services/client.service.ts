@@ -22,6 +22,11 @@ class ClientService {
     if (!result) throw new CustomError('Not Found', 404);
     return result;
   }
+
+  public static async getTotal() {
+    const result = await ClientModel.count();
+    return result;
+  }
 }
 
 export default ClientService;

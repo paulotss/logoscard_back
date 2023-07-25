@@ -11,4 +11,8 @@ router.get('/dependents', (req, res, next) =>
   new DependentController(req, res, next).getAll(),
 );
 
+router.get('/dependents/total', (req, res, next) =>
+  new DependentController(req, res, next).getTotal(),
+);
+
 export default router;

@@ -24,6 +24,15 @@ class DependentController {
     }
   }
 
+  public async getTotal() {
+    try {
+      const result = await DependentService.getTotal();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
   public async getAll() {
     try {
       const result = await DependentService.getAll();
