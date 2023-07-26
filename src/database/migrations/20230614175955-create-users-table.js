@@ -40,6 +40,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      birthday: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
     });
   },
 

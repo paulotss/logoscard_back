@@ -104,7 +104,7 @@ class UserService {
       photo: user.photo,
       rg: user.rg,
       cpf: user.cpf,
-      admin: 0,
+      birthday: user.birthday,
     });
     return result;
   }

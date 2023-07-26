@@ -7,6 +7,7 @@ interface IUser {
   password: string;
   rg: string;
   cpf: string;
+  birthday: string;
   file?: Express.Multer.File;
 }
 

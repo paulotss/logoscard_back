@@ -21,6 +21,8 @@ class UserModel extends Model {
   declare cpf: string;
 
   declare password: string;
+
+  declare birthday: string;
 }
 
 UserModel.init(
@@ -62,6 +64,10 @@ UserModel.init(
     cpf: {
       allowNull: false,
       type: DataTypes.STRING,
+    },
+    birthday: {
+      allowNull: false,
+      type: DataTypes.DATE,
     },
   },
   {
