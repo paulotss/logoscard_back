@@ -8,19 +8,23 @@ module.exports = {
       },
       {
         title: 'Maat Premium',
-        price: 200,
+        price: 300,
       },
       {
-        title: 'Seraphis Gold',
-        price: 100,
+        title: 'Seraphis/Maat Gold',
+        price: 408,
       },
       {
-        title: 'Maat Gold',
-        price: 150,
+        title: 'Maat Família',
+        price: 300,
       },
       {
         title: 'Seraphis Família',
-        price: 500,
+        price: 300,
+      },
+      {
+        title: 'Seraphis/Maat Família',
+        price: 408,
       },
     ]);
   },
