@@ -24,17 +24,29 @@ class InvoiceService {
   public static async generateInvoices(
     parcels: number,
     day: number,
+    method: string,
     userId: number,
     totalPrice: number,
+    dependents: number,
   ) {
     const invoices = [];
     const price = totalPrice / parcels;
     const expiration = new Date();
     expiration.setDate(day);
+    invoices.push({
+      amount: 20 + 5 * dependents,
+      paid: 0,
+      method,
+      userId,
+      expiration: `${expiration.getFullYear()}-${
+        expiration.getMonth() + 1
+      }-${expiration.getDate()}`,
+    });
     for (let i = 1; i <= parcels; i += 1) {
       invoices.push({
         amount: price,
         paid: 0,
+        method,
         userId,
         expiration: `${expiration.getFullYear()}-${
           expiration.getMonth() + 1

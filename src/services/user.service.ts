@@ -1,11 +1,27 @@
 import AssignmentsModel from '../database/models/assignments.model';
 import BenefitModel from '../database/models/benefit.model';
+import DependentModel from '../database/models/dependent.model';
 import InvoiceModel from '../database/models/invoice.model';
 import PlanModel from '../database/models/plan.model';
 import UserModel from '../database/models/user.model';
 import IUser from '../interfaces/IUser';
 import CustomError from '../utils/CustomError';
 import JwtToken from '../utils/JwtToken';
+import DependentService from './dependent.service';
+
+type DependentUserType = {
+  user: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    cellPhone: string;
+    password: string;
+    photo?: string;
+    rg: string;
+    cpf: string;
+  };
+  assignmentId: number;
+};
 
 class UserService {
   public static async getAll() {
@@ -43,6 +59,16 @@ class UserService {
               model: BenefitModel,
               as: 'benefits',
             },
+            {
+              model: DependentModel,
+              as: 'dependents',
+              include: [
+                {
+                  model: UserModel,
+                  as: 'user',
+                },
+              ],
+            },
           ],
         },
         {
@@ -57,6 +83,17 @@ class UserService {
     return result;
   }
 
+  public static async createBulkDependent(data: DependentUserType[]) {
+    const users = data.map(d => d.user);
+    const newUsers = await UserModel.bulkCreate(users);
+    const dependents = newUsers.map((u, index) => ({
+      userId: u.id,
+      assignmentId: data[index].assignmentId,
+    }));
+    const result = await DependentService.createBulk(dependents);
+    return result;
+  }
+
   public static async create(user: IUser) {
     const result = await UserModel.create({
       firstName: user.firstName,
@@ -67,7 +104,7 @@ class UserService {
       photo: user.photo,
       rg: user.rg,
       cpf: user.cpf,
-      admin: 0,
+      birthday: user.birthday,
     });
     return result;
   }

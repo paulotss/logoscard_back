@@ -11,7 +11,7 @@ module.exports = {
         cpf: '01810755123',
         rg: '2481942',
         password: '123456',
-        admin: 1,
+        birthday: '1986-9-9',
       },
       {
         first_name: 'Fulanob',
@@ -22,7 +22,7 @@ module.exports = {
         cpf: '01810755123',
         rg: '2481942',
         password: '123456',
-        admin: 0,
+        birthday: '1986-9-9',
       },
       {
         first_name: 'Fulanoc',
@@ -33,7 +33,7 @@ module.exports = {
         cpf: '01810755123',
         rg: '2481942',
         password: '123456',
-        admin: 0,
+        birthday: '1986-9-9',
       },
       {
         first_name: 'Fulanod',
@@ -44,7 +44,7 @@ module.exports = {
         cpf: '01810755123',
         rg: '2481942',
         password: '123456',
-        admin: 0,
+        birthday: '1986-9-9',
       },
       {
         first_name: 'Fulanoe',
@@ -55,7 +55,7 @@ module.exports = {
         cpf: '01810755123',
         rg: '2481942',
         password: '123456',
-        admin: 0,
+        birthday: '1986-9-9',
       },
     ]);
   },

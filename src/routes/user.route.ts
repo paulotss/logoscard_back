@@ -21,8 +21,8 @@ router.post(
     new UserController(req, res, next).create(multerStorage.getName()),
 );
 
-router.post('/login', (req, res, next) =>
-  new UserController(req, res, next).userLogin(),
+router.post('/user/dependent', (req, res, next) =>
+  new UserController(req, res, next).createBulkDependent(),
 );
 
 export default router;

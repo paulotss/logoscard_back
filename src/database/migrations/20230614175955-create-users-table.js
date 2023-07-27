@@ -29,7 +29,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       photo: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
       },
       rg: {
@@ -40,9 +40,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      admin: {
+      birthday: {
         allowNull: false,
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.DATE,
       },
     });
   },

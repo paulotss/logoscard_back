@@ -35,6 +35,16 @@ class UserController {
     }
   }
 
+  public async createBulkDependent() {
+    const data = this.request.body;
+    try {
+      const result = await UserService.createBulkDependent(data);
+      this.response.status(201).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
   public async create(fileName: string) {
     const user: IUser = this.request.body;
     user.photo =

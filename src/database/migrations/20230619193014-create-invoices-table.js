@@ -20,6 +20,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN,
       },
+      method: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       user_id: {
         allowNull: false,
         type: Sequelize.INTEGER,

@@ -10,6 +10,8 @@ class InvoiceModel extends Model {
 
   declare paid: boolean;
 
+  declare method: string;
+
   declare userId: number;
 }
 
@@ -32,6 +34,10 @@ InvoiceModel.init(
     paid: {
       allowNull: false,
       type: DataTypes.BOOLEAN,
+    },
+    method: {
+      allowNull: false,
+      type: DataTypes.STRING,
     },
     userId: {
       allowNull: false,

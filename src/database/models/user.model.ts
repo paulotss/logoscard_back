@@ -22,7 +22,7 @@ class UserModel extends Model {
 
   declare password: string;
 
-  declare admin: boolean;
+  declare birthday: string;
 }
 
 UserModel.init(
@@ -65,9 +65,9 @@ UserModel.init(
       allowNull: false,
       type: DataTypes.STRING,
     },
-    admin: {
+    birthday: {
       allowNull: false,
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.DATE,
     },
   },
   {
