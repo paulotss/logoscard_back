@@ -50,10 +50,12 @@ DependentModel.init(
 );
 
 DependentModel.belongsTo(UserModel, { as: 'user' });
+
 DependentModel.belongsTo(AssignmentsModel, {
   as: 'assignments',
   foreignKey: 'assignment_id',
 });
+
 AssignmentsModel.hasMany(DependentModel, {
   as: 'dependents',
   foreignKey: 'assignment_id',
