@@ -20,6 +20,7 @@ class ClientService {
           ],
         },
       ],
+      order: [[{ model: UserModel, as: 'user' }, 'firstName', 'ASC']],
     });
     if (!result) throw new CustomError('Not Found', 404);
     return result;
