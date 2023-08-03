@@ -12,10 +12,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.FLOAT,
       },
-      created_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
       invoice_id: {
         allowNull: true,
         type: Sequelize.INTEGER,
@@ -25,6 +21,14 @@ module.exports = {
           },
           key: 'id',
         },
+      },
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
       },
     });
   },
