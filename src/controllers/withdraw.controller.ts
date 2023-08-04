@@ -23,6 +23,15 @@ class WithdrawController {
     }
   }
 
+  public async getAll() {
+    try {
+      const result = await WithdrawService.getAll();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
   public async create() {
     const { amount, userId } = this.request.body;
     try {

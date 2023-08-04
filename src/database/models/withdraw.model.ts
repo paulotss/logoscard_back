@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
+import UserModel from './user.model';
 
 class WithdrawModel extends Model {
   declare id: number;
@@ -52,5 +53,7 @@ WithdrawModel.init(
     tableName: 'withdraws',
   },
 );
+
+WithdrawModel.belongsTo(UserModel, { as: 'user' });
 
 export default WithdrawModel;

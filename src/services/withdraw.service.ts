@@ -1,3 +1,4 @@
+import UserModel from '../database/models/user.model';
 import WithdrawModel from '../database/models/withdraw.model';
 
 class WithdrawService {
@@ -8,6 +9,18 @@ class WithdrawService {
       (acc, withdraw) => acc + withdraw.amount,
       initialValue,
     );
+    return result;
+  }
+
+  public static async getAll() {
+    const result = await WithdrawModel.findAll({
+      include: [
+        {
+          model: UserModel,
+          as: 'user',
+        },
+      ],
+    });
     return result;
   }
 
