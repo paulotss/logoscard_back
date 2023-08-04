@@ -10,6 +10,7 @@ import adminRouter from './routes/admin.route';
 import clientRouter from './routes/client.route';
 import dependentRouter from './routes/dependent.route';
 import depositRouter from './routes/deposit.route';
+import withdrawRouter from './routes/withdraw.route';
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(adminRouter);
 app.use(clientRouter);
 app.use(dependentRouter);
 app.use(depositRouter);
+app.use(withdrawRouter);
 
 app.use(ErrorHandle.handle);
 
