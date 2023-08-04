@@ -1,4 +1,5 @@
 import DepositModel from '../database/models/deposit.model';
+import InvoiceModel from '../database/models/invoice.model';
 
 class DepositService {
   public static async totalAmount() {
@@ -8,6 +9,18 @@ class DepositService {
       (acc, deposit) => acc + deposit.amount,
       initialValue,
     );
+    return result;
+  }
+
+  public static async getAll() {
+    const result = await DepositModel.findAll({
+      include: [
+        {
+          model: InvoiceModel,
+          as: 'invoice',
+        },
+      ],
+    });
     return result;
   }
 

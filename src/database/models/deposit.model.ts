@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
+import InvoiceModel from './invoice.model';
 
 class DepositModel extends Model {
   declare id: number;
@@ -52,5 +53,7 @@ DepositModel.init(
     tableName: 'deposits',
   },
 );
+
+DepositModel.belongsTo(InvoiceModel, { as: 'invoice' });
 
 export default DepositModel;

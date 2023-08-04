@@ -23,6 +23,15 @@ class DepositController {
     }
   }
 
+  public async getAll() {
+    try {
+      const result = await DepositService.getAll();
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
   public async create() {
     const { amount, invoiceId } = this.request.body;
     try {

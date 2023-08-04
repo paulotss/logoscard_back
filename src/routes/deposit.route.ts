@@ -11,4 +11,8 @@ router.post('/deposit', (req, res, next) =>
   new DepositController(req, res, next).create(),
 );
 
+router.get('/deposits', (req, res, next) =>
+  new DepositController(req, res, next).getAll(),
+);
+
 export default router;
