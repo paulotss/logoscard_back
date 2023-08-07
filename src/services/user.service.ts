@@ -123,6 +123,18 @@ class UserService {
     const jwt = new JwtToken();
     return jwt.generateToken(user.email);
   }
+
+  public static async getCurrentUser(token: string) {
+    const jwt = new JwtToken();
+    const data = jwt.getPayload(token);
+    const result = await UserModel.findOne({
+      where: {
+        email: typeof data === 'string' ? data : data.payload,
+      },
+    });
+    if (!result) throw new CustomError('Not Found', 404);
+    return result;
+  }
 }
 
 export default UserService;
