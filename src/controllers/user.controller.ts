@@ -66,6 +66,16 @@ class UserController {
       this.next(error);
     }
   }
+
+  public async getCurrentUser() {
+    const { token } = this.request.params;
+    try {
+      const result = await UserService.getCurrentUser(token);
+      this.response.status(200).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default UserController;
