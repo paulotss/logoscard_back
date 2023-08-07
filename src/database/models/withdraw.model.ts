@@ -7,6 +7,8 @@ class WithdrawModel extends Model {
 
   declare amount: number;
 
+  declare description: string;
+
   declare userId: number;
 
   declare createdAt: string;
@@ -25,6 +27,10 @@ WithdrawModel.init(
     amount: {
       allowNull: false,
       type: DataTypes.FLOAT,
+    },
+    description: {
+      allowNull: true,
+      type: DataTypes.TEXT,
     },
     userId: {
       allowNull: false,

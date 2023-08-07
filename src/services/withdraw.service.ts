@@ -26,8 +26,16 @@ class WithdrawService {
     return result;
   }
 
-  public static async create(amount: number, userId: number) {
-    const newWithdraw = await WithdrawModel.create({ amount, userId });
+  public static async create(
+    amount: number,
+    description: string,
+    userId: number,
+  ) {
+    const newWithdraw = await WithdrawModel.create({
+      amount,
+      description,
+      userId,
+    });
     const result = await WithdrawModel.findOne({
       where: {
         id: newWithdraw.id,

@@ -33,10 +33,11 @@ class WithdrawController {
   }
 
   public async create() {
-    const { amount, userId } = this.request.body;
+    const { amount, description, userId } = this.request.body;
     try {
       const result = await WithdrawService.create(
         Number(amount),
+        description,
         Number(userId),
       );
       this.response.status(200).json(result);
