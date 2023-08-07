@@ -6,7 +6,7 @@ import MulterStorage from '../utils/MulterStorage';
 const router = Router();
 const multerStorage = new MulterStorage(Date.now().toString());
 
-router.get('/user/:token', (req, res, next) =>
+router.get('/user/active/:token', (req, res, next) =>
   new UserController(req, res, next).getCurrentUser(),
 );
 
