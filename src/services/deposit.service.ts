@@ -20,6 +20,8 @@ class DepositService {
           as: 'invoice',
         },
       ],
+      order: [['createdAt', 'DESC']],
+      limit: 10,
     });
     return result;
   }

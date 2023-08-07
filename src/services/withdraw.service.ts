@@ -20,12 +20,25 @@ class WithdrawService {
           as: 'user',
         },
       ],
+      order: [['createdAt', 'DESC']],
+      limit: 10,
     });
     return result;
   }
 
   public static async create(amount: number, userId: number) {
-    const result = await WithdrawModel.create({ amount, userId });
+    const newWithdraw = await WithdrawModel.create({ amount, userId });
+    const result = await WithdrawModel.findOne({
+      where: {
+        id: newWithdraw.id,
+      },
+      include: [
+        {
+          model: UserModel,
+          as: 'user',
+        },
+      ],
+    });
     return result;
   }
 }
