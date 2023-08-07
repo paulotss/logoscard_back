@@ -2,6 +2,8 @@ import { Model, DataTypes } from 'sequelize';
 import db from '.';
 
 class AssignmentsBenefitsModel extends Model {
+  declare id: number;
+
   declare amount: number;
 
   declare benefitId: number;
@@ -11,6 +13,12 @@ class AssignmentsBenefitsModel extends Model {
 
 AssignmentsBenefitsModel.init(
   {
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
+    },
     amount: {
       allowNull: true,
       type: DataTypes.INTEGER,
