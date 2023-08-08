@@ -56,10 +56,6 @@ class DependentService {
                 },
               ],
             },
-            {
-              model: BenefitModel,
-              as: 'benefits',
-            },
           ],
         },
       ],
