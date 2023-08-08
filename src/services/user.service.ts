@@ -1,6 +1,7 @@
 import AssignmentsBenefitsModel from '../database/models/assignments.benefits.model';
 import AssignmentsModel from '../database/models/assignments.model';
 import BenefitModel from '../database/models/benefit.model';
+import BenefitNoteModel from '../database/models/benefits.notes.model';
 import DependentModel from '../database/models/dependent.model';
 import InvoiceModel from '../database/models/invoice.model';
 import PlanModel from '../database/models/plan.model';
@@ -63,6 +64,10 @@ class UserService {
                 {
                   model: BenefitModel,
                   as: 'benefit',
+                },
+                {
+                  model: BenefitNoteModel,
+                  as: 'notes',
                 },
               ],
             },

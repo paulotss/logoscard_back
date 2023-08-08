@@ -54,6 +54,13 @@ BenefitNoteModel.init(
   },
 );
 
-BenefitNoteModel.belongsTo(AssignmentsBenefitsModel, { as: 'benefit' });
+AssignmentsBenefitsModel.hasMany(BenefitNoteModel, {
+  as: 'notes',
+  foreignKey: 'assignmentBenefitId',
+});
+BenefitNoteModel.belongsTo(AssignmentsBenefitsModel, {
+  as: 'benefit',
+  foreignKey: 'id',
+});
 
 export default BenefitNoteModel;
