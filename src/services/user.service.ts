@@ -1,3 +1,4 @@
+import AssignmentsBenefitsModel from '../database/models/assignments.benefits.model';
 import AssignmentsModel from '../database/models/assignments.model';
 import BenefitModel from '../database/models/benefit.model';
 import DependentModel from '../database/models/dependent.model';
@@ -56,8 +57,14 @@ class UserService {
               ],
             },
             {
-              model: BenefitModel,
-              as: 'benefits',
+              model: AssignmentsBenefitsModel,
+              as: 'assignmentBenefit',
+              include: [
+                {
+                  model: BenefitModel,
+                  as: 'benefit',
+                },
+              ],
             },
             {
               model: DependentModel,
