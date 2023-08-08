@@ -1,41 +1,39 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('assignments_benefits', {
+    await queryInterface.createTable('benefits_notes', {
       id: {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
         type: Sequelize.INTEGER,
       },
-      amount: {
+      description: {
         allowNull: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.TEXT,
       },
-      benefit_id: {
+      assignment_benefit_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: {
-            tableName: 'benefits',
+            tableName: 'assignments_benefits',
           },
           key: 'id',
         },
       },
-      assignment_id: {
+      created_at: {
         allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: 'assignments',
-          },
-          key: 'id',
-        },
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
       },
     });
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('assignments_benefits');
+    await queryInterface.dropTable('benefits_notes');
   },
 };
