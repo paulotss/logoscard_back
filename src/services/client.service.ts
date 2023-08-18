@@ -1,5 +1,6 @@
 import UserModel from '../database/models/user.model';
 import AssignmentsModel from '../database/models/assignments.model';
+import InvoiceModel from '../database/models/invoice.model';
 import CustomError from '../utils/CustomError';
 import ClientModel from '../database/models/client.model';
 import IUser from '../interfaces/IUser';
@@ -16,6 +17,12 @@ class ClientService {
             {
               model: AssignmentsModel,
               as: 'assignment',
+            },
+            {
+              model: InvoiceModel,
+              as: 'invoices',
+              separate: true,
+              order: [['expiration', 'DESC']],
             },
           ],
         },
