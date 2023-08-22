@@ -1,9 +1,11 @@
 import UserModel from '../database/models/user.model';
 import AssignmentsModel from '../database/models/assignments.model';
+import InvoiceModel from '../database/models/invoice.model';
 import CustomError from '../utils/CustomError';
 import ClientModel from '../database/models/client.model';
 import IUser from '../interfaces/IUser';
 import UserService from './user.service';
+import DependentModel from '../database/models/dependent.model';
 
 class ClientService {
   public static async getAll() {
@@ -16,6 +18,24 @@ class ClientService {
             {
               model: AssignmentsModel,
               as: 'assignment',
+              include: [
+                {
+                  model: DependentModel,
+                  as: 'dependents',
+                  include: [
+                    {
+                      model: UserModel,
+                      as: 'user',
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              model: InvoiceModel,
+              as: 'invoices',
+              separate: true,
+              order: [['expiration', 'DESC']],
             },
           ],
         },
@@ -27,7 +47,6 @@ class ClientService {
   }
 
   public static async create(user: IUser) {
-    console.log(user);
     const newUser = await UserService.create(user);
     const result = await ClientModel.create({ userId: newUser.id });
     return result;
