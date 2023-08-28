@@ -56,7 +56,7 @@ class UserService {
       include: [
         {
           model: AssignmentsModel,
-          as: 'assignment',
+          as: 'assignments',
           include: [
             {
               model: PlanModel,
@@ -100,6 +100,9 @@ class UserService {
           separate: true,
           order: [['expiration', 'DESC']],
         },
+      ],
+      order: [
+        [{ model: AssignmentsModel, as: 'assignments' }, 'expiration', 'DESC'],
       ],
     });
     if (!result) throw new CustomError('Not Found', 404);
