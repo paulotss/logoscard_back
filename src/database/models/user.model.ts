@@ -79,7 +79,10 @@ UserModel.init(
   },
 );
 
-UserModel.hasOne(AssignmentsModel, { as: 'assignment', foreignKey: 'userId' });
+UserModel.hasMany(AssignmentsModel, {
+  as: 'assignments',
+  foreignKey: 'userId',
+});
 
 UserModel.hasMany(InvoiceModel, { as: 'invoices', foreignKey: 'userId' });
 InvoiceModel.belongsTo(UserModel, { as: 'user' });

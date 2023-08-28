@@ -17,7 +17,7 @@ class ClientService {
           include: [
             {
               model: AssignmentsModel,
-              as: 'assignment',
+              as: 'assignments',
               include: [
                 {
                   model: DependentModel,

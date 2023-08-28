@@ -76,6 +76,16 @@ class UserController {
       this.next(error);
     }
   }
+
+  public async update() {
+    const { userId, data } = this.request.body;
+    try {
+      const result = await UserService.update(userId, data);
+      this.response.status(201).json(result);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default UserController;
