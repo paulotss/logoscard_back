@@ -25,6 +25,17 @@ type DependentUserType = {
   assignmentId: number;
 };
 
+type UserType = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  cellPhone?: string;
+  password?: string;
+  photo?: string;
+  rg?: string;
+  cpf?: string;
+};
+
 class UserService {
   public static async getAll() {
     const result = await UserModel.findAll({
@@ -145,6 +156,18 @@ class UserService {
       },
     });
     if (!result) throw new CustomError('Not Found', 404);
+    return result;
+  }
+
+  public static async update(userId: number, data: UserType) {
+    const result = await UserModel.update(
+      { ...data },
+      {
+        where: {
+          id: userId,
+        },
+      },
+    );
     return result;
   }
 }

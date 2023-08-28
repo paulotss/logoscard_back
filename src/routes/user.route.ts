@@ -29,4 +29,8 @@ router.post('/user/dependent', (req, res, next) =>
   new UserController(req, res, next).createBulkDependent(),
 );
 
+router.put('/user/edit', (req, res, next) =>
+  new UserController(req, res, next).update(),
+);
+
 export default router;
