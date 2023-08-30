@@ -18,7 +18,6 @@ type DependentUserType = {
     email: string;
     cellPhone: string;
     password: string;
-    photo?: string;
     rg: string;
     cpf: string;
   };
@@ -127,7 +126,6 @@ class UserService {
       email: user.email,
       cellPhone: user.cellPhone,
       password: user.password,
-      photo: user.photo,
       rg: user.rg,
       cpf: user.cpf,
       birthday: user.birthday,

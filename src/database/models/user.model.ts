@@ -14,8 +14,6 @@ class UserModel extends Model {
 
   declare cellPhone: string;
 
-  declare photo: string;
-
   declare rg: string;
 
   declare cpf: string;
@@ -47,10 +45,6 @@ UserModel.init(
     },
     cellPhone: {
       allowNull: false,
-      type: DataTypes.STRING,
-    },
-    photo: {
-      allowNull: true,
       type: DataTypes.STRING,
     },
     password: {
