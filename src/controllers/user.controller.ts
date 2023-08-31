@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { extname } from 'path';
 import UserService from '../services/user.service';
 import IUser from '../interfaces/IUser';
 
@@ -45,10 +44,8 @@ class UserController {
     }
   }
 
-  public async create(fileName: string) {
+  public async create() {
     const user: IUser = this.request.body;
-    user.photo =
-      fileName + extname(this.request.file?.originalname || 'sample.jpg');
     try {
       const result = await UserService.create(user);
       this.response.status(201).json(result);
