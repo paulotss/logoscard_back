@@ -7,6 +7,7 @@ interface IUser {
   rg: string;
   cpf: string;
   birthday: string;
+  accessLevel: number;
 }
 
 export default IUser;

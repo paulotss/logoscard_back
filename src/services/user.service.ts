@@ -129,6 +129,7 @@ class UserService {
       rg: user.rg,
       cpf: user.cpf,
       birthday: user.birthday,
+      accessLevel: user.accessLevel,
     });
     return result;
   }

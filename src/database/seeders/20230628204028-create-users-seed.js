@@ -11,6 +11,7 @@ module.exports = {
         rg: '2481942',
         password: '123456',
         birthday: '1986-9-9',
+        access_level: 0,
       },
       {
         first_name: 'Fulanob',
@@ -21,6 +22,7 @@ module.exports = {
         rg: '2481942',
         password: '123456',
         birthday: '1986-9-9',
+        access_level: 2,
       },
       {
         first_name: 'Fulanoc',
@@ -31,6 +33,7 @@ module.exports = {
         rg: '2481942',
         password: '123456',
         birthday: '1986-9-9',
+        access_level: 2,
       },
       {
         first_name: 'Fulanod',
@@ -41,6 +44,7 @@ module.exports = {
         rg: '2481942',
         password: '123456',
         birthday: '1986-9-9',
+        access_level: 1,
       },
       {
         first_name: 'Fulanoe',
@@ -51,6 +55,7 @@ module.exports = {
         rg: '2481942',
         password: '123456',
         birthday: '1986-9-9',
+        access_level: 1,
       },
     ]);
   },

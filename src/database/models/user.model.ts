@@ -21,6 +21,8 @@ class UserModel extends Model {
   declare password: string;
 
   declare birthday: string;
+
+  declare accessLevel: number;
 }
 
 UserModel.init(
@@ -62,6 +64,10 @@ UserModel.init(
     birthday: {
       allowNull: false,
       type: DataTypes.DATE,
+    },
+    accessLevel: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
     },
   },
   {
