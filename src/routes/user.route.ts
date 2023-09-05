@@ -27,4 +27,8 @@ router.put('/user/edit', (req, res, next) =>
   new UserController(req, res, next).update(),
 );
 
+router.post('/login', (req, res, next) =>
+  new UserController(req, res, next).login(),
+);
+
 export default router;

@@ -1,5 +1,10 @@
 import jwt from 'jsonwebtoken';
 
+type UserPayloadType = {
+  email: string;
+  accessLevel: number;
+};
+
 class JwtToken {
   private privateKey: string;
 
@@ -7,7 +12,7 @@ class JwtToken {
     this.privateKey = process.env.JWT_TOKEN || 'shhhh';
   }
 
-  public generateToken(payload: string) {
+  public generateToken(payload: UserPayloadType) {
     return jwt.sign({ payload }, this.privateKey, {
       expiresIn: '1d',
     });
