@@ -65,12 +65,14 @@ class UserController {
   }
 
   public async getCurrentUser() {
-    const { token } = this.request.params;
+    const { authorization } = this.request.headers;
     try {
-      const result = await UserService.getCurrentUser(token);
-      this.response.status(200).json(result);
+      if (!authorization)
+        return this.response.status(404).json('Undefined Token');
+      const result = await UserService.getCurrentUser(authorization);
+      return this.response.status(200).json(result);
     } catch (error) {
-      this.next(error);
+      return this.next(error);
     }
   }
 

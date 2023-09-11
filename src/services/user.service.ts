@@ -140,7 +140,7 @@ class UserService {
     const data = jwt.getPayload(token);
     const result = await UserModel.findOne({
       where: {
-        email: typeof data === 'string' ? data : data.payload,
+        email: typeof data !== 'string' ? data.payload.email : data,
       },
     });
     if (!result) throw new CustomError('Not Found', 404);

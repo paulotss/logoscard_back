@@ -4,7 +4,7 @@ import AuthHandle from '../middlewares/AuthHandle';
 
 const router = Router();
 
-router.get('/user/active/:token', (req, res, next) =>
+router.get('/user/active', (req, res, next) =>
   new UserController(req, res, next).getCurrentUser(),
 );
 
