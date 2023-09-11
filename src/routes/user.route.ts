@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import UserController from '../controllers/user.controller';
+import AuthHandle from '../middlewares/AuthHandle';
 
 const router = Router();
 
@@ -29,6 +30,12 @@ router.put('/user/edit', (req, res, next) =>
 
 router.post('/login', (req, res, next) =>
   new UserController(req, res, next).login(),
+);
+
+router.get(
+  '/auth/verify',
+  (req, res, next) => AuthHandle.authVerify(req, res, next),
+  (_req, res) => res.status(200).json(res.locals.jwt),
 );
 
 export default router;

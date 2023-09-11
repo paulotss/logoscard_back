@@ -20,6 +20,7 @@ type DependentUserType = {
     password: string;
     rg: string;
     cpf: string;
+    accessLevel: number;
   };
   assignmentId: number;
 };
@@ -166,7 +167,8 @@ class UserService {
       },
     });
     if (!user) throw new CustomError('Not Found', 404);
-    if (user.password !== password) throw new CustomError('Not Found', 404);
+    if (user.password !== password)
+      throw new CustomError('Not Authorized', 403);
     const jwt = new JwtToken();
     return jwt.generateToken({
       email: user.email,
