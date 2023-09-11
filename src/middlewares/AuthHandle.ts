@@ -3,12 +3,16 @@ import JwtToken from '../utils/JwtToken';
 import CustomError from '../utils/CustomError';
 
 class AuthHandle {
-  public static async auth(req: Request, res: Response, next: NextFunction) {
+  public static async authVerify(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
       const { authorization } = req.headers;
       if (!authorization) throw new CustomError('erro', 404);
       const jwt = new JwtToken();
-      res.locals.jswt = jwt.getPayload(authorization);
+      res.locals.jwt = jwt.getPayload(authorization);
       return next();
     } catch (error) {
       return res.sendStatus(403);

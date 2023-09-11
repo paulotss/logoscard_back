@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import UserController from '../controllers/user.controller';
+import AuthHandle from '../middlewares/AuthHandle';
 
 const router = Router();
 
-router.get('/user/active/:token', (req, res, next) =>
+router.get('/user/active', (req, res, next) =>
   new UserController(req, res, next).getCurrentUser(),
 );
 
@@ -25,6 +26,16 @@ router.post('/user/dependent', (req, res, next) =>
 
 router.put('/user/edit', (req, res, next) =>
   new UserController(req, res, next).update(),
+);
+
+router.post('/login', (req, res, next) =>
+  new UserController(req, res, next).login(),
+);
+
+router.get(
+  '/auth/verify',
+  (req, res, next) => AuthHandle.authVerify(req, res, next),
+  (_req, res) => res.status(200).json(res.locals.jwt),
 );
 
 export default router;

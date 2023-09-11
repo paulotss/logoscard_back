@@ -54,10 +54,10 @@ class UserController {
     }
   }
 
-  public async userLogin() {
-    const { email, password, admin } = this.request.body;
+  public async login() {
+    const { email, password } = this.request.body;
     try {
-      const result = await UserService.userLogin(email, password, admin);
+      const result = await UserService.login(email, password);
       this.response.status(200).json(result);
     } catch (error) {
       this.next(error);
@@ -65,12 +65,14 @@ class UserController {
   }
 
   public async getCurrentUser() {
-    const { token } = this.request.params;
+    const { authorization } = this.request.headers;
     try {
-      const result = await UserService.getCurrentUser(token);
-      this.response.status(200).json(result);
+      if (!authorization)
+        return this.response.status(404).json('Undefined Token');
+      const result = await UserService.getCurrentUser(authorization);
+      return this.response.status(200).json(result);
     } catch (error) {
-      this.next(error);
+      return this.next(error);
     }
   }
 

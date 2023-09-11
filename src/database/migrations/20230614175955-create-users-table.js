@@ -40,6 +40,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      access_level: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
     });
   },
 

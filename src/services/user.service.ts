@@ -20,6 +20,7 @@ type DependentUserType = {
     password: string;
     rg: string;
     cpf: string;
+    accessLevel: number;
   };
   assignmentId: number;
 };
@@ -129,23 +130,9 @@ class UserService {
       rg: user.rg,
       cpf: user.cpf,
       birthday: user.birthday,
+      accessLevel: user.accessLevel,
     });
     return result;
-  }
-
-  public static async userLogin(
-    email: string,
-    password: string,
-    admin: boolean,
-  ) {
-    const user = await UserModel.findOne({
-      where: { email, admin },
-    });
-    if (!user) throw new CustomError('Not found', 404);
-    if (user.password !== password)
-      throw new CustomError('Wrong password', 401);
-    const jwt = new JwtToken();
-    return jwt.generateToken(user.email);
   }
 
   public static async getCurrentUser(token: string) {
@@ -153,7 +140,7 @@ class UserService {
     const data = jwt.getPayload(token);
     const result = await UserModel.findOne({
       where: {
-        email: typeof data === 'string' ? data : data.payload,
+        email: typeof data !== 'string' ? data.payload.email : data,
       },
     });
     if (!result) throw new CustomError('Not Found', 404);
@@ -170,6 +157,23 @@ class UserService {
       },
     );
     return result;
+  }
+
+  public static async login(email: string, password: string) {
+    const user = await UserModel.findOne({
+      where: {
+        email,
+        password,
+      },
+    });
+    if (!user) throw new CustomError('Not Found', 404);
+    if (user.password !== password)
+      throw new CustomError('Not Authorized', 403);
+    const jwt = new JwtToken();
+    return jwt.generateToken({
+      email: user.email,
+      accessLevel: user.accessLevel,
+    });
   }
 }
 
