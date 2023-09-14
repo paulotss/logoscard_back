@@ -1,7 +1,8 @@
 interface IInvoice {
-  id: number;
+  id?: number;
   amount: number;
   expiration: string;
+  method: string;
   paid: boolean;
 }
 

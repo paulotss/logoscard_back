@@ -1,11 +1,13 @@
 import IInvoice from '../interfaces/IInvoice';
 
 class Invoice {
-  private id: number;
+  private id: number | undefined;
 
   private amount: number;
 
   private expiration: string;
+
+  private method: string;
 
   private paid: boolean;
 
@@ -13,10 +15,11 @@ class Invoice {
     this.id = invoice.id;
     this.amount = invoice.amount;
     this.expiration = invoice.expiration;
+    this.method = invoice.method;
     this.paid = invoice.paid;
   }
 
-  public getId(): number {
+  public getId(): number | undefined {
     return this.id;
   }
 
@@ -26,6 +29,10 @@ class Invoice {
 
   public getExpiration(): string {
     return this.expiration;
+  }
+
+  public getMethod(): string {
+    return this.method;
   }
 
   public getPaid(): boolean {
