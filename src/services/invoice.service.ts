@@ -14,8 +14,7 @@ class InvoiceSercice {
   public async getById(invoiceId: number): Promise<Invoice> {
     const result = await InvoiceModel.findByPk(invoiceId);
     if (!result) throw new CustomError('Not Found', 404);
-    const { id, amount, expiration, method, paid } = result;
-    return this.createInvoiceDomain({ id, amount, expiration, method, paid });
+    return this.createInvoiceDomain(result);
   }
 
   public async update(invoice: IInvoice): Promise<Invoice> {
