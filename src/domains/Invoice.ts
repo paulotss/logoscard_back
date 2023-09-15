@@ -11,12 +11,15 @@ class Invoice {
 
   private paid: boolean;
 
+  private userId: number | undefined;
+
   constructor(invoice: IInvoice) {
     this.id = invoice.id;
     this.amount = invoice.amount;
     this.expiration = invoice.expiration;
     this.method = invoice.method;
     this.paid = invoice.paid;
+    this.userId = invoice.userId;
   }
 
   public getId(): number | undefined {
@@ -37,6 +40,10 @@ class Invoice {
 
   public getPaid(): boolean {
     return this.paid;
+  }
+
+  public getUserId(): number | undefined {
+    return this.userId;
   }
 }
 

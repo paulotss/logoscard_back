@@ -4,6 +4,7 @@ interface IInvoice {
   expiration: string;
   method: string;
   paid: boolean;
+  userId?: number;
 }
 
 export default IInvoice;
