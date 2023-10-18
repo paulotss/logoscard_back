@@ -8,26 +8,29 @@ class InvoiceController {
 
   private next: NextFunction;
 
+  private service: InvoiceService;
+
   constructor(req: Request, res: Response, next: NextFunction) {
     this.request = req;
     this.response = res;
     this.next = next;
+    this.service = new InvoiceService();
   }
 
   public async getOne() {
     const { id } = this.request.params;
     try {
-      const result = await InvoiceService.getOne(Number(id));
+      const result = await this.service.getById(Number(id));
       this.response.status(200).json(result);
     } catch (error) {
       this.next(error);
     }
   }
 
-  public async pay() {
-    const { invoiceId } = this.request.body;
+  public async update() {
+    const { invoice } = this.request.body;
     try {
-      const result = await InvoiceService.pay(Number(invoiceId));
+      const result = await this.service.update(invoice);
       this.response.status(200).json(result);
     } catch (error) {
       this.next(error);
@@ -35,17 +38,9 @@ class InvoiceController {
   }
 
   public async generateInvoices() {
-    const { parcels, day, userId, totalPrice, method, dependents } =
-      this.request.body;
+    const { invoiceGenerate } = this.request.body;
     try {
-      const result = await InvoiceService.generateInvoices(
-        Number(parcels),
-        Number(day),
-        method,
-        Number(userId),
-        Number(totalPrice),
-        Number(dependents),
-      );
+      const result = await this.service.bulkCreate(invoiceGenerate);
       this.response.status(201).json(result);
     } catch (error) {
       this.next(error);
@@ -54,7 +49,7 @@ class InvoiceController {
 
   public async getTotalPaid() {
     try {
-      const result = await InvoiceService.getTotalPaid();
+      const result = await this.service.getTotalPaid();
       this.response.status(200).json(result);
     } catch (error) {
       this.next(error);
@@ -63,7 +58,7 @@ class InvoiceController {
 
   public async getTotalPending() {
     try {
-      const result = await InvoiceService.getTotalPending();
+      const result = await this.service.getTotalPending();
       this.response.status(200).json(result);
     } catch (error) {
       this.next(error);
@@ -72,7 +67,7 @@ class InvoiceController {
 
   public async getTotalOverdue() {
     try {
-      const result = await InvoiceService.getTotalOverdue();
+      const result = await this.service.getTotalOverdue();
       this.response.status(200).json(result);
     } catch (error) {
       this.next(error);

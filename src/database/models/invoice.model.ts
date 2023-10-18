@@ -6,7 +6,7 @@ class InvoiceModel extends Model {
 
   declare amount: number;
 
-  declare expiration: number;
+  declare expiration: string;
 
   declare paid: boolean;
 

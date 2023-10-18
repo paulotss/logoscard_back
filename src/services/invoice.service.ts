@@ -1,64 +1,63 @@
+/* eslint-disable class-methods-use-this */
 import { Op } from 'sequelize';
 import InvoiceModel from '../database/models/invoice.model';
-import UserModel from '../database/models/user.model';
 import CustomError from '../utils/CustomError';
+import Invoice from '../domains/Invoice';
+import IInvoice from '../interfaces/IInvoice';
+import TInvoiceGenerate from '../types/TInvoiceGenerate';
 
-class InvoiceService {
-  public static async getOne(id: number) {
-    const result = await InvoiceModel.findByPk(id, {
-      include: {
-        model: UserModel,
-        as: 'user',
-      },
-    });
+class InvoiceSercice {
+  private createInvoiceDomain(invoice: IInvoice): Invoice {
+    return new Invoice(invoice);
+  }
+
+  public async getById(invoiceId: number): Promise<Invoice> {
+    const result = await InvoiceModel.findByPk(invoiceId);
     if (!result) throw new CustomError('Not Found', 404);
-    return result;
+    return this.createInvoiceDomain(result);
   }
 
-  public static async pay(id: number) {
-    const result = await InvoiceModel.update({ paid: 1 }, { where: { id } });
-    if (!result[0]) throw new CustomError('Not Modified', 403);
-    return result;
-  }
-
-  public static async generateInvoices(
-    parcels: number,
-    day: number,
-    method: string,
-    userId: number,
-    totalPrice: number,
-    dependents: number,
-  ) {
-    const invoices = [];
-    const price = totalPrice / parcels;
-    const expiration = new Date();
-    expiration.setDate(day);
-    invoices.push({
-      amount: 20 + 5 * dependents,
-      paid: 0,
-      method,
-      userId,
-      expiration: `${expiration.getFullYear()}-${
-        expiration.getMonth() + 1
-      }-${expiration.getDate()}`,
+  public async update(invoice: IInvoice): Promise<Invoice> {
+    const result = await InvoiceModel.update(invoice, {
+      where: { id: invoice.id },
     });
-    for (let i = 1; i <= parcels; i += 1) {
-      invoices.push({
-        amount: price,
-        paid: 0,
-        method,
-        userId,
+    if (!result[0]) throw new CustomError('Not Modified', 304);
+    return this.createInvoiceDomain(invoice);
+  }
+
+  public async bulkCreate(data: TInvoiceGenerate) {
+    const price = data.totalPrice / data.parcels;
+    const expiration = new Date();
+    expiration.setDate(data.day);
+    const invoices: Array<Invoice> = [];
+    invoices.push(
+      this.createInvoiceDomain({
+        amount: 20 + 5 * data.dependents,
+        paid: false,
+        method: data.method,
+        userId: data.userId,
         expiration: `${expiration.getFullYear()}-${
           expiration.getMonth() + 1
         }-${expiration.getDate()}`,
-      });
+      }),
+    );
+    for (let i = 1; i <= data.parcels; i += 1) {
+      invoices.push(
+        this.createInvoiceDomain({
+          amount: price,
+          paid: false,
+          method: data.method,
+          userId: data.userId,
+          expiration: `${expiration.getFullYear()}-${
+            expiration.getMonth() + 1
+          }-${expiration.getDate()}`,
+        }),
+      );
       expiration.setMonth(expiration.getMonth() + 1);
     }
-    const result = await InvoiceModel.bulkCreate(invoices);
-    return result;
   }
 
-  public static async getTotalPaid() {
+  public async getTotalPaid() {
     const paidInvoices = await InvoiceModel.findAll({
       where: { paid: 1 },
     });
@@ -69,7 +68,7 @@ class InvoiceService {
     return result;
   }
 
-  public static async getTotalPending() {
+  public async getTotalPending() {
     const pendingInvoices = await InvoiceModel.findAll({
       where: { paid: 0 },
     });
@@ -80,7 +79,7 @@ class InvoiceService {
     return result;
   }
 
-  public static async getTotalOverdue() {
+  public async getTotalOverdue() {
     const overdueInvoices = await InvoiceModel.findAll({
       where: {
         paid: 0,
@@ -99,4 +98,4 @@ class InvoiceService {
   }
 }
 
-export default InvoiceService;
+export default InvoiceSercice;
