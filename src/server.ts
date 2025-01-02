@@ -3,4 +3,4 @@ import app from './app';
 
 const { PORT } = process.env;
 
-app.listen(PORT, () => console.log('Listening port 3001'));
+app.listen(PORT, () => console.log(`Listening port ${PORT}`));
