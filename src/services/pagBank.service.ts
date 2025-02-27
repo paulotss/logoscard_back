@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Amount, Interval, Trial } from "../interfaces/pagBank";
 
 class PagBankService {
 
@@ -67,6 +68,39 @@ class PagBankService {
             throw error;
         }
 
+    }
+
+    public static async createPlan(
+        amount: Amount,
+        interval: Interval,
+        trial: Trial,
+        reference_id: string,
+        name: string,
+        description: string
+    ) {
+        const url = `https://api.assinaturas.pagseguro.com/plans`;
+        const headers = {
+            Authorization: `Bearer ${process.env.PAGBANK_API_TOKEN}`,
+            "Content-Type": "application/json",
+            Accept: "*/*",
+        };
+
+        const payload = {
+            amount,
+            interval,
+            trial,
+            reference_id,
+            name,
+            description,
+        };
+
+        try {
+            const response = await axios.post(url, payload, { headers });
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao criar o pedido:", error);
+            throw error;
+        }
     }
 }
 

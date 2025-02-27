@@ -11,4 +11,8 @@ router.get('/orders/:order_id', (req, res, next) =>
     new PagBankController(req, res, next).get(),
   );
 
+router.post('/signature/plans', (req, res, next) =>
+  new PagBankController(req, res, next).createPlans(),
+);
+
   export default router

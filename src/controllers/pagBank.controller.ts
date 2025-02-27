@@ -47,6 +47,27 @@ class PagBankController {
             this.next(error);
         }
     }
+
+    public async createPlans() {
+        try {
+            const { amount, interval, trial, reference_id, name, description } = this.request.body;
+
+            if (!amount || !interval || !name) {
+                return this.response.status(400).json({ error: "Missing required fields" });
+              }
+
+            const createdPlan = await PagBankService.createPlan(amount, interval, trial, reference_id, name, description);
+            return this.response.status(201).json(createdPlan);
+
+
+        } catch (error: any) {
+            console.error("Error creating plan:", error.response?.data || error.message);
+        return this.response.status(500).json({
+            error: error.response?.data?.message || "Internal Server Error"
+        });
+        }
+
+    }
 }
 
 export default PagBankController;
