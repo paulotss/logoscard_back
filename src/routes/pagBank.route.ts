@@ -15,4 +15,16 @@ router.post('/signature/plans', (req, res, next) =>
   new PagBankController(req, res, next).createPlans(),
 );
 
-  export default router
+    router.post('/signature/customers', (req, res, next) => {
+      new PagBankController(req, res, next).createUser(),
+      console.log(req.body);
+    }
+  
+);
+
+router.post('/signature/subscription', (req, res, next) => 
+  new PagBankController(req, res, next).createSignature(),
+);
+
+export default router;
+

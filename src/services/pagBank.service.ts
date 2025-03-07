@@ -102,6 +102,82 @@ class PagBankService {
             throw error;
         }
     }
+
+    public static async createUser(data: any) {
+        const url = `https://api.assinaturas.pagseguro.com/customers`;
+        const headers = {
+            Authorization: `Bearer ${process.env.PAGBANK_API_TOKEN}`,
+            "Content-Type": "application/json",
+            Accept: "*/*",
+        };
+
+        const payload = {
+            name: data.name,
+            email: data.email,
+            tax_id: data.tax_id,
+            phones: data.phones,
+            birth_date: data.birth_date,
+            billing_info: [
+                {
+                    card: {
+                        holder: {
+                            phone: data.phones[0],
+                            name: data.name,
+                            birth_date: data.birth_date,
+                            tax_id: data.tax_id,
+                        },
+                        encrypted: data.billing_info,
+                    },
+                    type: "CREDIT_CARD",
+                },
+            ],
+        };
+
+        try {
+            const response = await axios.post(url, payload, { headers });
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao criar o usuário:", error);
+            throw error;
+        }
+    }
+
+    public static async createSignature(data: any) {
+        const url = `https://api.assinaturas.pagseguro.com/subscriptions`;
+        const headers = {
+            Authorization: `Bearer ${process.env.PAGBANK_API_TOKEN}`,
+            "Content-Type": "application/json",
+            Accept: "*/*",
+        };
+
+        const payload = {
+            plan: data.plan,
+            customer: data.customer,
+            amount: data.amount,
+            splits: data.splits,
+            payment_method: [
+                {
+                    type: "CREDIT_CARD",
+                    card: {
+                        security_code: data.payment_method[0].card.security_code,
+                    },
+                },
+            ],
+            pro_rata: data.pro_rata,
+            split_enabled: data.split_enabled,
+            reference_id: data.reference_id,
+        };
+        
+
+        try {
+            const response = await axios.post(url, payload, { headers });
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao criar o usuário:", error);
+            throw error;
+        }
+
+    }
 }
 
 export default PagBankService;

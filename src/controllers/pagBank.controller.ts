@@ -50,7 +50,13 @@ class PagBankController {
 
     public async createPlans() {
         try {
-            const { amount, interval, trial, reference_id, name, description } = this.request.body;
+            const { amount,
+                    interval,
+                    trial,
+                    reference_id,
+                    name,
+                    description
+                } = this.request.body;
 
             if (!amount || !interval || !name) {
                 return this.response.status(400).json({ error: "Missing required fields" });
@@ -68,6 +74,78 @@ class PagBankController {
         }
 
     }
+
+    public async createUser() {
+        console.log(this.request.body);
+        const { 
+                name,
+                email, 
+                tax_id, 
+                phones, 
+                birth_date, 
+                billing_info
+            } = this.request.body;
+
+        console.log(this.request.body);
+
+        if (!name || !email || !tax_id || !phones || !Array.isArray(billing_info) || billing_info.length === 0) {
+            return this.response.status(400).json({ message: "Missing required fields" });
+        }
+
+        if (!billing_info[0]?.card?.encrypted) {
+            return this.response.status(400).json({ message: "Encrypted card is required" });
+        }
+
+        try {
+            const result = await PagBankService.createUser({
+                name,
+                email,
+                tax_id,
+                phones,
+                birth_date,
+                billing_info: billing_info[0].card.encrypted,
+            });
+
+            this.response.status(200).json(result);
+        } catch (error) {
+            this.next(error);
+        }
+    }
+
+    public async createSignature() {
+        const { 
+            plan, 
+            customer, 
+            amount, 
+            splits, 
+            payment_method, 
+            pro_rata, 
+            split_enabled, 
+            reference_id 
+        } = this.request.body;
+
+        if (!plan || !reference_id || !customer || !amount || !splits || !payment_method || split_enabled === undefined) {
+            return this.response.status(400).json({ message: "Missing required fields" });
+        } 
+
+        try {
+            const result = await PagBankService.createSignature({
+                plan, 
+                customer, 
+                amount, 
+                splits, 
+                payment_method, 
+                pro_rata, 
+                split_enabled, 
+                reference_id, 
+            });
+
+            this.response.status(200).json(result);
+        } catch (error) {
+            this.next(error);
+        }
+    }
+
 }
 
 export default PagBankController;
