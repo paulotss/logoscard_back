@@ -26,5 +26,23 @@ router.post('/signature/subscription', (req, res, next) =>
   new PagBankController(req, res, next).createSignature(),
 );
 
+
+//NÃO TESTADAS
+router.get('/subscriptions', (req, res, next) => {
+  new PagBankController(req, res, next).getSubscriptions()
+});
+
+router.put('/subscriptions', (req, res, next) => {
+  new PagBankController(req, res, next).cancelSubscription()
+});
+
+router.get('/subscriptions/:subscriptionId', (req, res, next) => {
+  new PagBankController(req, res, next).getInvoices()
+});
+
+router.get('/plans', (req, res, next) => {
+  new PagBankController(req, res, next).getPlans()
+});
+
 export default router;
 

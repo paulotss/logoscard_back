@@ -150,6 +150,66 @@ class PagBankController {
         }
     }
 
+
+    //NÃO TESTADAS
+    public async getSubscriptions() {
+        try {
+            const data = await PagBankService.getSubscriptions();
+            return this.response.json(data);
+        } catch (error) {
+            console.error(error);
+            return this.response.status(500).json({ error: "Erro ao listar assinaturas" });
+        }
+    }
+
+    public async cancelSubscription() {
+        const { subscriptionId } = this.request.params;
+
+        if (!subscriptionId) {
+            throw new Error("ID da assinatura inválido ou ausente")
+        }
+
+        try {
+            await PagBankService.cancelSubscription(subscriptionId);
+            return this.response.status(204).send();
+        } catch (error) {
+            console.error(error);
+            return this.response.status(500).json({ error: "Erro ao cancelar assinatura" });
+        }
+    }
+
+    public async getInvoices() {
+        const { subscriptionId } = this.request.params;
+        const { status, offset, limit } = this.request.query;
+
+        if (!subscriptionId) {
+            throw new Error("ID da assinatura inválido ou ausente")
+        }
+
+        try {
+            const data = await PagBankService.getInvoices(
+                subscriptionId,
+                typeof status === 'string' ? status : "PAID,UNPAID,WAITING,OVERDUE",
+                offset ? Number(offset) : 0,
+                limit ? Number(limit) : 100
+            );
+            return this.response.json(data);
+        } catch (error) {
+            console.error(error);
+            return this.response.status(500).json({ error: "Erro ao listar faturas" });
+        }
+    }
+
+    public async getPlans() {
+        try {
+            const data = await PagBankService.getPlans();
+            return this.response.json(data);
+        } catch (error) {
+            console.error(error);
+            return this.response.status(500).json({ error: "Erro ao listar planos" });
+        }
+    }
+
 }
 
 export default PagBankController;

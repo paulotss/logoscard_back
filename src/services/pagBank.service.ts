@@ -178,6 +178,72 @@ class PagBankService {
         }
 
     }
+
+    // NÃO TESTADAS
+    public static async getSubscriptions() {
+        const url = `https://api.assinaturas.pagseguro.com/subscriptions`;
+        const headers = {
+            Authorization: `Bearer ${process.env.PAGBANK_API_TOKEN}`,
+            Accept: "application/json",
+        };
+
+        try {
+            const response = await axios.get(url, { headers });
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao listar assinaturas:", error);
+            throw error;
+        }
+    }
+
+    public static async cancelSubscription(subscriptionId: string) {
+        const url = `https://api.assinaturas.pagseguro.com/subscriptions/${subscriptionId}/cancel`;
+        const headers = {
+            Authorization: `Bearer ${process.env.PAGBANK_API_TOKEN}`,
+            Accept: "application/json",
+        };
+
+        try {
+            await axios.put(url, null, { headers });
+            return { success: true };
+        } catch (error) {
+            console.error("Erro ao cancelar assinatura:", error);
+            throw error;
+        }
+    }
+
+    public static async getInvoices(subscriptionId: string, status = "PAID,UNPAID,WAITING,OVERDUE", offset = 0, limit = 100) {
+        const url = `https://api.assinaturas.pagseguro.com/subscriptions/${subscriptionId}/invoices`;
+        const headers = {
+            Authorization: `Bearer ${process.env.PAGBANK_API_TOKEN}`,
+            Accept: "application/json",
+        };
+
+        try {
+            const response = await axios.get(url, { headers });
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao listar faturas:", error);
+            throw error;
+        }
+    }
+
+    public static async getPlans() {
+        const url = `https://api.assinaturas.pagseguro.com/plans`;
+        const headers = {
+            Authorization: `Bearer ${process.env.PAGBANK_API_TOKEN}`,
+            Accept: "application/json",
+        };
+
+        try {
+            const response = await axios.get(url, { headers });
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao listar planos:", error);
+            throw error;
+        }
+    }
+
 }
 
 export default PagBankService;
