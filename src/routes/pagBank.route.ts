@@ -40,7 +40,7 @@ router.get('/subscriptions/:subscriptionId', (req, res, next) => {
   new PagBankController(req, res, next).getInvoices()
 });
 
-router.get('/plans', (req, res, next) => {
+router.get('/pagbank/plans', (req, res, next) => {
   new PagBankController(req, res, next).getPlans()
 });
 
