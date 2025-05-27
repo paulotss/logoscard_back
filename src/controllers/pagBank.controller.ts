@@ -118,8 +118,6 @@ class PagBankController {
         const { 
             plan, 
             customer, 
-            amount, 
-            splits, 
             payment_method, 
             pro_rata, 
             split_enabled, 
@@ -128,16 +126,14 @@ class PagBankController {
 
         console.log(this.request.body);
 
-        if (!plan || !reference_id || !customer || !amount || !splits || !payment_method || split_enabled === undefined) {
+        if (!plan || !reference_id || !customer ||  !payment_method) {
             return this.response.status(400).json({ message: "Missing required fields" });
         } 
 
         try {
             const result = await PagBankService.createSignature({
                 plan, 
-                customer, 
-                amount, 
-                splits, 
+                customer,
                 payment_method, 
                 pro_rata, 
                 split_enabled, 
@@ -207,6 +203,35 @@ class PagBankController {
         } catch (error) {
             console.error(error);
             return this.response.status(500).json({ error: "Erro ao listar planos" });
+        }
+    }
+
+    public async getCustomers() {
+        try {
+            const data = await PagBankService.getCustomers();
+            return this.response.json(data);
+        } catch (error) {
+            console.error(error);
+            return this.response.status(500).json({ error: "Erro ao listar Clientes" });
+        }
+    }
+
+    public async getByCpf() {
+        try {
+
+            const { cpf } = this.request.params;
+
+            if (!cpf) {
+                return this.response.status(400).json({ message: "Missing required fields" });
+            }
+
+            const customerId = await PagBankService.findByCPF(cpf);
+
+            return this.response.status(200).json(customerId);
+
+        } catch (error) {
+            console.error(error);
+            return this.response.status(500).json({ error: "Erro ao listar Clientes" });
         }
     }
 

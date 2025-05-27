@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Amount, Interval, Trial } from "../interfaces/pagBank";
+import { Amount, Interval, Trial, Customer, CustomersResponse } from "../interfaces/pagBank";
 
 class PagBankService {
 
@@ -240,6 +240,45 @@ class PagBankService {
             return response.data;
         } catch (error) {
             console.error("Erro ao listar planos:", error);
+            throw error;
+        }
+    }
+
+    public static async getCustomers() {
+        const url = `https://api.assinaturas.pagseguro.com/customers`;
+        const headers = {
+            Authorization: `Bearer ${process.env.PAGBANK_API_TOKEN}`,
+            Accept: "application/json",
+        };
+
+        try {
+            const response = await axios.get(url, { headers });
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao listar clientes:", error);
+            throw error;
+        }
+    }
+
+    public static async findByCPF(cpf:string) {
+        try {
+
+            //TODO Mudar url da API para desenvolvimento assim que eu depois dos testes
+            const response = await axios.get<CustomersResponse>(
+                'https://logoscardback-production.up.railway.app/pagbank/customers'
+            );
+            const customers: Customer[] = response.data.customers;
+      
+            if (!customers || !Array.isArray(customers)) {
+              return null;
+            }
+      
+            const customer = customers.find((c: any) => c.tax_id === cpf);
+      
+            return customer ? customer.id : null;
+
+        } catch (error) {
+            console.error("Erro ao listar clientes:", error);
             throw error;
         }
     }

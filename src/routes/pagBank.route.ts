@@ -15,11 +15,8 @@ router.post('/signature/plans', (req, res, next) =>
   new PagBankController(req, res, next).createPlans(),
 );
 
-    router.post('/signature/customers', (req, res, next) => {
-      new PagBankController(req, res, next).createUser(),
-      console.log(req.body);
-    }
-  
+router.post('/signature/customers', (req, res, next) => 
+  new PagBankController(req, res, next).createUser(),
 );
 
 router.post('/signature/subscription', (req, res, next) => 
@@ -42,6 +39,14 @@ router.get('/subscriptions/:subscriptionId', (req, res, next) => {
 
 router.get('/pagbank/plans', (req, res, next) => {
   new PagBankController(req, res, next).getPlans()
+});
+
+router.get('/pagbank/customers', (req, res, next) => {
+  new PagBankController(req, res, next).getCustomers()
+});
+
+router.get('/pagbank/customers/:cpf', (req, res, next) => {
+  new PagBankController(req, res, next).getByCpf()
 });
 
 export default router;
