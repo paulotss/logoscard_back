@@ -14,6 +14,13 @@ import pagBankRouter from './routes/pagBank.route'
 
 const app = express();
 
+app.use(express.raw({
+    type: 'application/json',
+    verify: (req, res, buf) => {
+      (req as any).rawBody = buf.toString();
+    }
+  }));
+
 app.use(express.json());
 app.use(cors());
 

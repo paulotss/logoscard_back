@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import PagBankService from '../services/pagBank.service';
-import { error } from 'console';
+
 
 class PagBankController {
 
@@ -64,7 +64,14 @@ class PagBankController {
                 return this.response.status(400).json({ error: "Missing required fields" });
               }
 
-            const createdPlan = await PagBankService.createPlan(amount, interval, trial, reference_id, name, description);
+            const createdPlan = await PagBankService.createPlan(
+                amount, 
+                interval, 
+                trial, 
+                reference_id, 
+                name, 
+                description
+            );
             return this.response.status(201).json(createdPlan);
 
 
@@ -90,7 +97,14 @@ class PagBankController {
 
         console.log(this.request.body);
 
-        if (!name || !email || !tax_id || !phones || !Array.isArray(billing_info) || billing_info.length === 0) {
+        if (
+            !name || 
+            !email || 
+            !tax_id || 
+            !phones || 
+            !Array.isArray(billing_info) 
+            || billing_info.length === 0
+        ) {
             return this.response.status(400).json({ message: "Missing required fields" });
         }
 
@@ -146,8 +160,29 @@ class PagBankController {
         }
     }
 
+    public async handleWebhook() {
+        try {
+          const signature = this.request.headers['x-pagseguro-signature'] as string;
+          const rawBody = (this.request as any).rawBody;
+          await PagBankService.handleWebhookEvent(this.request.body, signature, rawBody);
+          this.response.status(200).json({ message: "Webhook received" });
+        } catch (error) {
+          this.next(error);
+        }
+      }
+    
+      public async getPublicKey() {
+        try {
+          const publicKey = process.env.PAGBANK_PUBLIC_KEY;
+          if (!publicKey) {
+            throw new Error('PAGBANK_PUBLIC_KEY is not configured.');
+          }
+          this.response.status(200).json({ publicKey });
+        } catch (error) {
+          this.next(error);
+        }
+      }
 
-    //NÃO TESTADAS
     public async getSubscriptions() {
         try {
             const data = await PagBankService.getSubscriptions();
