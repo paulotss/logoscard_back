@@ -17,6 +17,7 @@ import dependentRouter from './routes/dependent.route';
 import depositRouter from './routes/deposit.route';
 import withdrawRouter from './routes/withdraw.route';
 import pagBankRouter from './routes/pagBank.route';
+import cardRouter from './routes/card.route';
 
 const app = express();
 
@@ -74,7 +75,7 @@ app.use(
 app.use(SecurityMiddleware.configureCORS);
 app.use(SecurityMiddleware.validateContentType);
 app.use(SecurityMiddleware.requestSizeLimit);
-// app.use(SecurityMiddleware.logRequest);
+app.use(SecurityMiddleware.logRequest);
 
 // Apply payment rate limiting to PagBank routes
 app.use('/api/pagbank', SecurityMiddleware.paymentRateLimit);
@@ -90,6 +91,7 @@ app.use('/api/dependents', dependentRouter);
 app.use('/api/deposits', depositRouter);
 app.use('/api/withdraws', withdrawRouter);
 app.use('/api/pagbank', pagBankRouter);
+app.use('/api/card', cardRouter);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
