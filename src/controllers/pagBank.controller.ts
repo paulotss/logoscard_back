@@ -26,7 +26,7 @@ class PagBankController {
         }
 
         try {
-            const result = await PagBankService.create(customer, items);
+            const result = await PagBankService.createOrder(customer, items);
             this.response.status(200).json(result);
         } catch (error) {
             this.next(error);
@@ -41,7 +41,7 @@ class PagBankController {
         }
 
         try {
-            const result = await PagBankService.get(order_id);
+            const result = await PagBankService.getOrder(order_id);
             this.response.status(200).json(result);
         } catch (error) {
             this.next(error);

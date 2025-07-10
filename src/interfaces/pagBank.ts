@@ -129,12 +129,5 @@ export interface PagBankSubscriptionCreationResponse {
     status: string;
 }
 
-export interface PagBankLegacyTransaction {
-  transaction: {
-    status: string[]; // O parser de XML retorna os campos como arrays de string
-    reference: string[];
-    // Adicione outros campos do XML se precisar no futuro
-  }
-}
 
 
