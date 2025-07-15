@@ -16,9 +16,9 @@ class InvoiceService {
   }
 
   public static async pay(id: number) {
-    const result = await InvoiceModel.update({ paid: 1 }, { where: { id } });
-    if (!result[0]) throw new CustomError('Not Modified', 403);
-    return result;
+    const [affectedRows] = await InvoiceModel.update({ paid: true }, { where: { id } });
+    if (affectedRows === 0) throw new CustomError('Invoice not found or already paid', 404);
+    return { message: 'Invoice paid successfully' };
   }
 
   public static async generateInvoices(
@@ -28,39 +28,54 @@ class InvoiceService {
     userId: number,
     totalPrice: number,
     dependents: number,
+    pagbankSubscriptionId: string,
   ) {
     const invoices = [];
     const price = totalPrice / parcels;
-    const expiration = new Date();
-    expiration.setDate(day);
-    invoices.push({
-      amount: 20 + 5 * dependents,
-      paid: 0,
-      method,
-      userId,
-      expiration: `${expiration.getFullYear()}-${
-        expiration.getMonth() + 1
-      }-${expiration.getDate()}`,
-    });
-    for (let i = 1; i <= parcels; i += 1) {
+
+    for (let i = 0; i < parcels; i += 1) {
+      const expiration = new Date();
+      expiration.setDate(day);
+      expiration.setMonth(expiration.getMonth() + i);
+      expiration.setHours(23, 59, 59, 999);
+
+      const currentAmount = i === 0 ? price + (20 + 5 * dependents) : price;
+
       invoices.push({
-        amount: price,
-        paid: 0,
+        amount: currentAmount,
+        paid: false,
         method,
         userId,
-        expiration: `${expiration.getFullYear()}-${
-          expiration.getMonth() + 1
-        }-${expiration.getDate()}`,
+        expiration,
+        pagbankSubscriptionId,
       });
-      expiration.setMonth(expiration.getMonth() + 1);
     }
     const result = await InvoiceModel.bulkCreate(invoices);
     return result;
   }
 
+  public static async payByPagBankSubscriptionId(pagbankSubscriptionId: string) {
+    const invoiceToPay = await InvoiceModel.findOne({
+      where: {
+        pagbankSubscriptionId,
+        paid: false,
+      },
+      order: [['expiration', 'ASC']],
+    });
+
+    if (invoiceToPay) {
+      console.log(`Webhook: Marking invoice ${invoiceToPay.id} as paid.`);
+      await invoiceToPay.update({ paid: true });
+      return invoiceToPay;
+    } else {
+      console.warn(`Webhook: No pending invoice found for subscription ID: ${pagbankSubscriptionId}. It might have all been paid already.`);
+      return { message: 'No pending invoice to update.' };
+    }
+  }
+
   public static async getTotalPaid() {
     const paidInvoices = await InvoiceModel.findAll({
-      where: { paid: 1 },
+      where: { paid: true },
     });
     const result = paidInvoices.reduce(
       (acc, invoice) => acc + invoice.amount,
@@ -71,7 +86,7 @@ class InvoiceService {
 
   public static async getTotalPending() {
     const pendingInvoices = await InvoiceModel.findAll({
-      where: { paid: 0 },
+      where: { paid: false },
     });
     const result = pendingInvoices.reduce(
       (acc, invoice) => acc + invoice.amount,
@@ -83,11 +98,9 @@ class InvoiceService {
   public static async getTotalOverdue() {
     const overdueInvoices = await InvoiceModel.findAll({
       where: {
-        paid: 0,
+        paid: false,
         expiration: {
-          [Op.lt]: `${new Date().getFullYear()}-${
-            new Date().getMonth() + 1
-          }-${new Date().getDate()}`,
+          [Op.lt]: new Date(),
         },
       },
     });
