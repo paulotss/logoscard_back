@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 type UserPayloadType = {
   email: string;
   accessLevel: number;
+  userId?: number;
 };
 
 class JwtToken {
