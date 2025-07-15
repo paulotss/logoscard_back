@@ -35,7 +35,7 @@ class InvoiceController {
   }
 
   public async generateInvoices() {
-    const { parcels, day, userId, totalPrice, method, dependents } =
+    const { parcels, day, userId, totalPrice, method, dependents, pagbankSubscriptionId } =
       this.request.body;
     try {
       const result = await InvoiceService.generateInvoices(
@@ -45,6 +45,7 @@ class InvoiceController {
         Number(userId),
         Number(totalPrice),
         Number(dependents),
+        pagbankSubscriptionId,
       );
       this.response.status(201).json(result);
     } catch (error) {

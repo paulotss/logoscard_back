@@ -3,16 +3,12 @@ import db from '.';
 
 class InvoiceModel extends Model {
   declare id: number;
-
   declare amount: number;
-
-  declare expiration: number;
-
+  declare expiration: Date;
   declare paid: boolean;
-
   declare method: string;
-
   declare userId: number;
+  declare pagbankSubscriptionId: string;
 }
 
 InvoiceModel.init(
@@ -34,6 +30,7 @@ InvoiceModel.init(
     paid: {
       allowNull: false,
       type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     method: {
       allowNull: false,
@@ -43,19 +40,23 @@ InvoiceModel.init(
       allowNull: false,
       type: DataTypes.INTEGER,
       references: {
-        model: {
-          tableName: 'users',
-        },
+        model: 'users',
         key: 'id',
       },
+    },
+
+    pagbankSubscriptionId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: 'pagbank_subscription_id',
     },
   },
   {
     sequelize: db,
     underscored: true,
     modelName: 'InvoiceModel',
-    timestamps: false,
     tableName: 'invoices',
+    timestamps: false,
   },
 );
 

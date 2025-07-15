@@ -10,7 +10,7 @@ import clientRouter from './routes/client.route';
 import dependentRouter from './routes/dependent.route';
 import depositRouter from './routes/deposit.route';
 import withdrawRouter from './routes/withdraw.route';
-import pagBankRouter from './routes/pagBank.route'
+import pagBankRouter from './routes/pagBank.route';
 
 const app = express();
 
