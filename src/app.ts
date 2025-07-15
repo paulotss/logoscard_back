@@ -10,8 +10,16 @@ import clientRouter from './routes/client.route';
 import dependentRouter from './routes/dependent.route';
 import depositRouter from './routes/deposit.route';
 import withdrawRouter from './routes/withdraw.route';
+import pagBankRouter from './routes/pagBank.route'
 
 const app = express();
+
+app.use(express.raw({
+    type: 'application/json',
+    verify: (req, res, buf) => {
+      (req as any).rawBody = buf.toString();
+    }
+  }));
 
 app.use(express.json());
 app.use(cors());
@@ -25,6 +33,7 @@ app.use(clientRouter);
 app.use(dependentRouter);
 app.use(depositRouter);
 app.use(withdrawRouter);
+app.use(pagBankRouter);
 
 app.use(ErrorHandle.handle);
 
