@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.dockerignore
+Dockerfile
+.docker
+yarn.lock
+*.log
+.DS_Store
+coverage
+.nyc_output
+tests
+*.test.js
+*.test.ts
+.vscode
+.idea 
