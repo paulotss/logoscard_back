@@ -9,6 +9,7 @@ import UserModel from '../database/models/user.model';
 import IUser from '../interfaces/IUser';
 import CustomError from '../utils/CustomError';
 import JwtToken from '../utils/JwtToken';
+import { SecurityUtils } from '../utils/Security';
 import DependentService from './dependent.service';
 
 type DependentUserType = {
@@ -121,18 +122,22 @@ class UserService {
   }
 
   public static async create(user: IUser) {
+    const hashedPassword = await SecurityUtils.hashPassword(user.password);
+
     const result = await UserModel.create({
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       cellPhone: user.cellPhone,
-      password: user.password,
+      password: hashedPassword,
       rg: user.rg,
       cpf: user.cpf,
       birthday: user.birthday,
       accessLevel: user.accessLevel,
     });
-    return result;
+
+    const { password, ...userWithoutPassword } = result.toJSON();
+    return userWithoutPassword;
   }
 
   public static async getCurrentUser(token: string) {
@@ -142,37 +147,57 @@ class UserService {
       where: {
         email: typeof data !== 'string' ? data.payload.email : data,
       },
+      attributes: { exclude: ['password'] },
     });
     if (!result) throw new CustomError('Not Found', 404);
     return result;
   }
 
   public static async update(userId: number, data: UserType) {
-    const result = await UserModel.update(
-      { ...data },
-      {
-        where: {
-          id: userId,
-        },
+    const updateData = { ...data };
+    if (updateData.password) {
+      updateData.password = await SecurityUtils.hashPassword(
+        updateData.password,
+      );
+    }
+
+    const result = await UserModel.update(updateData, {
+      where: {
+        id: userId,
       },
-    );
+    });
     return result;
   }
 
   public static async login(email: string, password: string) {
+    if (!email || !password) {
+      throw new CustomError('Email and password are required', 400);
+    }
+
     const user = await UserModel.findOne({
       where: {
         email,
-        password,
       },
     });
-    if (!user) throw new CustomError('Not Found', 404);
-    if (user.password !== password)
-      throw new CustomError('Not Authorized', 403);
+
+    if (!user) {
+      throw new CustomError('Invalid credentials', 401);
+    }
+
+    const isPasswordValid = await SecurityUtils.verifyPassword(
+      password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new CustomError('Invalid credentials', 401);
+    }
+
     const jwt = new JwtToken();
     return jwt.generateToken({
       email: user.email,
       accessLevel: user.accessLevel,
+      userId: user.id,
     });
   }
 }
