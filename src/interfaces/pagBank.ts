@@ -129,5 +129,24 @@ export interface PagBankSubscriptionCreationResponse {
     status: string;
 }
 
+export interface PagBankInvoice {
+  id: string;
+  amount: {
+    value: number;
+    currency: string;
+  };
+  status: 'PAID' | 'PENDING' | 'OVERDUE' | 'CANCELED' | 'WAITING';
+  occurrence: number; // O número da parcela (1ª, 2ª, etc.)
+  due_date?: string; // Data de vencimento
+}
+
+// Descreve a resposta completa da API que lista as faturas
+export interface PagBankInvoicesResponse {
+  invoices: PagBankInvoice[];
+  result_set: {
+    total: number;
+  };
+}
+
 
 

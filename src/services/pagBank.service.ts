@@ -7,6 +7,8 @@ import {
     PagBankCustomer,
     PagBankCustomersResponse,
     PagBankSubscriptionCreationResponse,
+    PagBankInvoice,
+    PagBankInvoicesResponse,
 } from "../interfaces/pagBank";
 import InvoiceService from './invoice.service';
 
@@ -227,14 +229,19 @@ class PagBankService {
     }
 
     // ----- INVOICES -----
-    public static async getInvoices(subscriptionId: string, status = "PAID,UNPAID,WAITING,OVERDUE", offset = 0, limit = 100) {
+    public static async getInvoices(
+        subscriptionId: string, 
+        status = "PAID,UNPAID,WAITING,OVERDUE", 
+        offset = 0, 
+        limit = 100
+    ):Promise<PagBankInvoicesResponse> {
         const baseUrl = process.env.PAGBANK_API_SUBSCRIPTIONS_URL;
         const url = `${baseUrl}/subscriptions/${subscriptionId}/invoices`;
         const headers = this.getHeaders();
         const params = { status, offset, limit };
 
         try {
-            const response = await axios.get(url, { headers, params });
+            const response = await axios.get<PagBankInvoicesResponse>(url, { headers, params });
             return response.data;
         } catch (error) {
             console.error("Erro ao listar faturas:", error);
