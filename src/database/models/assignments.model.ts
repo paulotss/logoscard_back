@@ -7,11 +7,13 @@ import AssignmentsBenefitsModel from './assignments.benefits.model';
 class AssignmentsModel extends Model {
   declare id: number;
 
-  declare expiration: string;
+  declare expiration: Date;
 
   declare planId: number;
 
   declare userId: number;
+
+  declare pagbankSubscriptionId: string;
 }
 
 AssignmentsModel.init(
@@ -31,6 +33,7 @@ AssignmentsModel.init(
     planId: {
       allowNull: false,
       type: DataTypes.INTEGER,
+      field: 'plan_id',
       references: {
         model: {
           tableName: 'plans',
@@ -42,12 +45,19 @@ AssignmentsModel.init(
     userId: {
       allowNull: false,
       type: DataTypes.INTEGER,
+      field: 'user_id',
       references: {
         model: {
           tableName: 'users',
         },
         key: 'id',
       },
+    },
+
+    pagbankSubscriptionId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: 'pagbank_subscription_id',
     },
   },
   {
