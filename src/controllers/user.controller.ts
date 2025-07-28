@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import UserService from '../services/user.service';
 import IUser from '../interfaces/IUser';
 import { SecurityUtils } from '../utils/Security';
+import CustomError from '../utils/CustomError';
+
+//todo: Corrigir mensagens de erro, utilizando if em vez de (error as Error)
 
 class UserController {
   private request: Request;
@@ -127,7 +130,7 @@ class UserController {
       });
       this.response.status(201).json(result);
     } catch (error) {
-      this.logSecurityEvent('CREATE_USER_ERROR', { error: error.message });
+      this.logSecurityEvent('CREATE_USER_ERROR', { error: (error as Error).message });
       this.next(error);
     }
   }
@@ -163,11 +166,11 @@ class UserController {
     } catch (error) {
       this.logSecurityEvent('LOGIN_FAILED', {
         email: this.request.body.email,
-        error: error.message,
+        error: (error as Error).message,
       });
 
       // Don't expose the exact error for security
-      if (error.message.includes('Invalid credentials')) {
+      if ((error as Error).message.includes('Invalid credentials')) {
         return this.response.status(401).json({
           message: 'Invalid email or password',
         });
@@ -179,22 +182,17 @@ class UserController {
 
   public async getCurrentUser() {
     try {
-      const { authorization } = this.request.headers;
-
-      if (!authorization) {
-        this.logSecurityEvent('GET_CURRENT_USER_NO_TOKEN');
-        return this.response
-          .status(401)
-          .json({ message: 'Authorization token required' });
+      // this.request.user foi adicionado pelo middleware de autenticação
+      const userId = this.request.user?.id;
+  
+      if (!userId) {
+        throw new CustomError('User ID not found in token', 401);
       }
-
-      this.logSecurityEvent('GET_CURRENT_USER_ATTEMPT');
-      const result = await UserService.getCurrentUser(authorization);
-      this.logSecurityEvent('GET_CURRENT_USER_SUCCESS', { userId: result.id });
-      return this.response.status(200).json(result?.dataValues);
+      
+      const result = await UserService.getCurrentUser(userId);
+      this.response.status(200).json(result);
     } catch (error) {
-      this.logSecurityEvent('GET_CURRENT_USER_ERROR', { error: error.message });
-      return this.next(error);
+      this.next(error);
     }
   }
 
@@ -235,7 +233,7 @@ class UserController {
       this.logSecurityEvent('UPDATE_USER_SUCCESS', { userId: id });
       this.response.status(200).json(result);
     } catch (error) {
-      this.logSecurityEvent('UPDATE_USER_ERROR', { error: error.message });
+      this.logSecurityEvent('UPDATE_USER_ERROR', { error: (error as Error).message });
       this.next(error);
     }
   }

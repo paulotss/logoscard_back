@@ -140,16 +140,17 @@ class UserService {
     return userWithoutPassword;
   }
 
-  public static async getCurrentUser(token: string) {
-    const jwt = new JwtToken();
-    const data = jwt.getPayload(token);
+  public static async getCurrentUser(userId: number) {
+    // A função não precisa mais decodificar o token, pois o middleware já fez isso.
+    // Ela agora apenas busca o usuário no banco de dados com o ID recebido.
     const result = await UserModel.findOne({
       where: {
-        email: typeof data !== 'string' ? data.payload.email : data,
+        id: userId,
       },
       attributes: { exclude: ['password'] },
     });
-    if (!result) throw new CustomError('Not Found', 404);
+  
+    if (!result) throw new CustomError('User not found', 404);
     return result;
   }
 

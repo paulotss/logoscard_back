@@ -131,24 +131,32 @@ class SecurityMiddleware {
   ) => {
     try {
       const token = req.header('Authorization')?.replace('Bearer ', '');
-
+  
       if (!token) {
         throw new CustomError('Access token is required', 401);
       }
-
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
+  
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any; // Supondo que req.user já foi tipado
       req.user = decoded;
-
-      // Log authentication attempt
+  
       console.log(
         `[AUTH] User ${decoded.id} authenticated for ${req.method} ${req.path}`,
       );
-
+  
       next();
-    } catch (error) {
+    } catch (error) { // 'error' aqui é do tipo 'unknown'
+      
+      // CORREÇÃO: Verificamos o tipo do erro antes de usá-lo.
+      let errorMessage = 'An unknown error occurred during authentication.';
+      if (error instanceof Error) {
+        // Dentro deste 'if', o TypeScript sabe que 'error' tem a propriedade '.message'.
+        errorMessage = error.message;
+      }
+  
       console.log(
-        `[AUTH] Authentication failed for ${req.method} ${req.path}: ${error.message}`,
+        `[AUTH] Authentication failed for ${req.method} ${req.path}: ${errorMessage}`,
       );
+      
       res.status(401).json({ error: 'Invalid or expired token' });
     }
   };
@@ -183,7 +191,7 @@ class SecurityMiddleware {
       return res.status(400).json({
         error: 'Validation failed',
         details: errors.array().map(err => ({
-          field: err.param,
+          field: (err as any).path || (err as any).param,
           message: err.msg,
         })),
       });
@@ -235,7 +243,7 @@ class SecurityMiddleware {
     next: NextFunction,
   ) => {
     const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
-      'http://localhost:3003',
+      'http://localhost:3002',
     ];
     const origin = req.get('Origin');
 

@@ -1,58 +1,69 @@
 import { Router } from 'express';
 import CardTokenController from '../controllers/card.token.controller';
-import AuthHandle from '../middlewares/AuthHandle';
+// ALTERADO: Removemos o import do AuthHandle que foi excluído.
 import SecurityMiddleware from '../middlewares/SecurityMiddleware';
 
 const cardRoutes = Router();
 
-// Apply security middleware to all card routes
+// Aplica o rate limit a todas as rotas de cartão, como já estava.
 cardRoutes.use(SecurityMiddleware.paymentRateLimit);
 
-// POST /card/generate-token - Generate a new card token
-cardRoutes.post('/generate-token', AuthHandle.authVerify, (req, res, next) => {
-  const controller = new CardTokenController(req, res, next);
-  controller.generateToken();
-});
+// POST /card/generate-token - Gerar um novo token de cartão
+cardRoutes.post(
+  '/generate-token',
+  SecurityMiddleware.authenticate, // ALTERADO: Usa o middleware padrão
+  (req, res, next) => {
+    const controller = new CardTokenController(req, res, next);
+    controller.generateToken();
+  }
+);
 
-// POST /card/validate-token - Validate a card token
+// POST /card/validate-token - Validar um token de cartão (geralmente pública)
 cardRoutes.post('/validate-token', (req, res, next) => {
   const controller = new CardTokenController(req, res, next);
   controller.validateToken();
 });
 
-// POST /card/use-token - Mark a token as used
+// POST /card/use-token - Marcar um token como usado
 cardRoutes.post('/use-token', (req, res, next) => {
   const controller = new CardTokenController(req, res, next);
   controller.useToken();
 });
 
-// GET /card/tokens - Get user's active tokens (authenticated)
-cardRoutes.get('/tokens', AuthHandle.authVerify, (req, res, next) => {
-  const controller = new CardTokenController(req, res, next);
-  controller.getUserTokens();
-});
+// GET /card/tokens - Obter os tokens ativos de um usuário (autenticado)
+cardRoutes.get(
+  '/tokens',
+  SecurityMiddleware.authenticate, // ALTERADO: Usa o middleware padrão
+  (req, res, next) => {
+    const controller = new CardTokenController(req, res, next);
+    controller.getUserTokens();
+  }
+);
 
-// GET /card/rate-limit - Get rate limit info for current user
-cardRoutes.get('/rate-limit', AuthHandle.authVerify, (req, res, next) => {
-  const controller = new CardTokenController(req, res, next);
-  controller.getRateLimitInfo();
-});
+// --- Rotas de Admin ---
+// Apenas administradores podem acessar as rotas abaixo
 
-// Admin routes
-// GET /card/admin/token/:token - Get token info (admin only)
+// GET /card/admin/token/:token - Obter informações de um token
 cardRoutes.get(
   '/admin/token/:token',
-  AuthHandle.authVerify,
+  SecurityMiddleware.authenticate,      // ALTERADO: 1º - Verifica se está logado
+  SecurityMiddleware.requireAdmin,      // ADICIONADO: 2º - Verifica se é admin
   (req, res, next) => {
     const controller = new CardTokenController(req, res, next);
     controller.getTokenInfo();
-  },
+  }
 );
 
-// POST /card/admin/cleanup - Cleanup expired tokens (admin only)
-cardRoutes.post('/admin/cleanup', AuthHandle.authVerify, (req, res, next) => {
-  const controller = new CardTokenController(req, res, next);
-  controller.cleanupExpiredTokens();
-});
+// POST /card/admin/cleanup - Limpar tokens expirados
+cardRoutes.post(
+  '/admin/cleanup',
+  SecurityMiddleware.authenticate,      // ALTERADO: 1º - Verifica se está logado
+  SecurityMiddleware.requireAdmin,      // ADICIONADO: 2º - Verifica se é admin
+  (req, res, next) => {
+    const controller = new CardTokenController(req, res, next);
+    controller.cleanupExpiredTokens();
+  }
+);
+
 
 export default cardRoutes;

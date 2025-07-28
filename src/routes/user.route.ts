@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import UserController from '../controllers/user.controller';
-import AuthHandle from '../middlewares/AuthHandle';
+import SecurityMiddleware from '../middlewares/SecurityMiddleware';
 
 const router = Router();
 
-router.get('/user/active', (req, res, next) =>
-  new UserController(req, res, next).getCurrentUser(),
+router.get(
+  '/user/active',
+  SecurityMiddleware.authenticate, // <-- ESSENCIAL
+  (req, res, next) => new UserController(req, res, next).getCurrentUser(),
 );
 
 router.get('/users', (req, res, next) =>
@@ -33,9 +35,12 @@ router.post('/login', (req, res, next) =>
 );
 
 router.get(
-  '/auth/verify',
-  (req, res, next) => AuthHandle.authVerify(req, res, next),
-  (_req, res) => res.status(200).json(res.locals.jwt),
+  '/verify',
+  SecurityMiddleware.authenticate, // <-- Usa o middleware de autenticação padrão
+  (req, res) => {
+    // Se chegou aqui, o token é válido e req.user existe.
+    res.status(200).json({ valid: true, user: req.user });
+  },
 );
 
 export default router;
