@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import BenefitService from '../services/benefit.service';
-import TAssignmentBenefit from '../types/TAssignmentBenefit';
+import TAssignmentBenefit from '../@types/TAssignmentBenefit';
 
 class BenefitController {
   private request: Request;

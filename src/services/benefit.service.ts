@@ -1,5 +1,5 @@
 import AssignmentsBenefitsModel from '../database/models/assignments.benefits.model';
-import TAssignmentBenefit from '../types/TAssignmentBenefit';
+import TAssignmentBenefit from '../@types/TAssignmentBenefit';
 
 class BenefitService {
   public static async addBenefitToAssignment(payload: TAssignmentBenefit[]) {

@@ -129,6 +129,12 @@ class SecurityMiddleware {
     res: Response,
     next: NextFunction,
   ) => {
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      console.error('[AUTH] Fatal: JWT_SECRET not configured in .env file.');
+      return res.status(500).json({ error: 'Internal server configuration error.' });
+    }
+  
     try {
       const token = req.header('Authorization')?.replace('Bearer ', '');
   
@@ -136,20 +142,22 @@ class SecurityMiddleware {
         throw new CustomError('Access token is required', 401);
       }
   
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any; // Supondo que req.user já foi tipado
+      // CORREÇÃO: Tipamos a saída do 'verify' com nossa interface JwtPayload
+      const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
+      
+      // O TypeScript agora sabe que 'decoded' tem 'userId', 'email', etc.
+      // E o nosso arquivo express.d.ts permite adicionar 'user' ao 'req'.
       req.user = decoded;
   
+      // CORREÇÃO: Usamos a propriedade correta 'userId' no log
       console.log(
-        `[AUTH] User ${decoded.id} authenticated for ${req.method} ${req.path}`,
+        `[AUTH] User ${decoded.userId} authenticated for ${req.method} ${req.path}`,
       );
   
       next();
-    } catch (error) { // 'error' aqui é do tipo 'unknown'
-      
-      // CORREÇÃO: Verificamos o tipo do erro antes de usá-lo.
+    } catch (error) {
       let errorMessage = 'An unknown error occurred during authentication.';
       if (error instanceof Error) {
-        // Dentro deste 'if', o TypeScript sabe que 'error' tem a propriedade '.message'.
         errorMessage = error.message;
       }
   
