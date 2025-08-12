@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import PagBankService from '../services/pagBank.service';
+import InvoiceService from '../services/invoice.service';
 
 class PagBankController {
   private request: Request;
@@ -86,7 +87,7 @@ class PagBankController {
     const { name, email, tax_id, phones, birth_date, billing_info } =
       this.request.body;
 
-    console.log(this.request.body);
+    console.log('Oi gg', this.request.body);
 
     if (
       !name ||
@@ -114,7 +115,7 @@ class PagBankController {
         tax_id,
         phones,
         birth_date,
-        billing_info: billing_info[0].card.encrypted,
+        billing_info,
       });
 
       this.response.status(200).json(result);
@@ -131,16 +132,18 @@ class PagBankController {
       pro_rata,
       split_enabled,
       reference_id,
+      user_id,
     } = this.request.body;
 
-    console.log(this.request.body);
+    console.log('request', this.request);
 
     if (!plan || !reference_id || !customer || !payment_method) {
       return this.response
         .status(400)
         .json({ message: 'Missing required fields' });
     }
-
+    const userId = user_id || this.request.user?.id;
+    console.log('request userId', userId);
     try {
       const result = await PagBankService.createSignature({
         plan,
@@ -149,9 +152,10 @@ class PagBankController {
         pro_rata,
         split_enabled,
         reference_id,
+        user_id: userId,
       });
 
-      this.response.status(200).json(result);
+      this.response.status(200).json(result.data);
     } catch (error) {
       this.next(error);
     }
@@ -214,6 +218,44 @@ class PagBankController {
     }
   }
 
+  public async equalizeInvoices() {
+    const { subscriptionId } = this.request.body;
+
+    if (!subscriptionId) {
+      return this.response
+        .status(400)
+        .json({ message: 'Subscription ID is required' });
+    }
+
+    try {
+      // Get subscription details from PagBank
+      const subscription = await PagBankService.getSubscription(subscriptionId);
+
+      if (subscription.status === 'ACTIVE') {
+        // Update current month invoices to paid
+        const result =
+          await InvoiceService.payCurrentMonthInvoicesBySubscriptionId(
+            subscriptionId,
+          );
+
+        return this.response.status(200).json({
+          message: 'Invoices synchronized successfully',
+          subscriptionStatus: subscription.status,
+          result,
+        });
+      } else {
+        return this.response.status(200).json({
+          message: 'Subscription is not active',
+          subscriptionStatus: subscription.status,
+          action: 'No invoices were updated',
+        });
+      }
+    } catch (error) {
+      console.error('Error in equalizeInvoices:', error);
+      this.next(error);
+    }
+  }
+
   public async getInvoices() {
     const { subscriptionId } = this.request.params;
     const { status, offset, limit } = this.request.query;
@@ -263,7 +305,7 @@ class PagBankController {
   public async getByCpf() {
     try {
       const { cpf } = this.request.params;
-
+      console.log(cpf, 'GG CPF');
       if (!cpf) {
         return this.response
           .status(400)

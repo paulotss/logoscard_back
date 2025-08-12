@@ -4,55 +4,59 @@ import PagBankController from '../controllers/pagBank.controller';
 const router = Router();
 
 router.post('/orders', (req, res, next) =>
-    new PagBankController(req, res, next).create(),
-  );
+  new PagBankController(req, res, next).create(),
+);
 
 router.get('/orders/:order_id', (req, res, next) =>
-    new PagBankController(req, res, next).get(),
-  );
+  new PagBankController(req, res, next).get(),
+);
 
 router.post('/signature/plans', (req, res, next) =>
   new PagBankController(req, res, next).createPlans(),
 );
 
-router.post('/signature/customers', (req, res, next) => 
+router.post('/signature/customers', (req, res, next) =>
   new PagBankController(req, res, next).createUser(),
 );
 
-router.post('/signature/subscription', (req, res, next) => 
+router.post('/signature/subscription', (req, res, next) =>
   new PagBankController(req, res, next).createSignature(),
 );
 
-router.post('/webhooks/pagbank', (req, res, next) => 
-  new PagBankController(req, res, next).handleWebhook()
+router.post('/webhooks/pagbank', (req, res, next) =>
+  new PagBankController(req, res, next).handleWebhook(),
 );
 
 router.get('/pagbank/public-key', (req, res, next) =>
-   new PagBankController(req, res, next).getPublicKey()
+  new PagBankController(req, res, next).getPublicKey(),
 );
 
 router.get('/subscriptions', (req, res, next) => {
-  new PagBankController(req, res, next).getSubscriptions()
+  new PagBankController(req, res, next).getSubscriptions();
 });
 
 router.put('/subscriptions', (req, res, next) => {
-  new PagBankController(req, res, next).cancelSubscription()
+  new PagBankController(req, res, next).cancelSubscription();
 });
 
 router.get('/subscriptions/:subscriptionId', (req, res, next) => {
-  new PagBankController(req, res, next).getInvoices()
+  new PagBankController(req, res, next).getInvoices();
 });
 
 router.get('/pagbank/plans', (req, res, next) => {
-  new PagBankController(req, res, next).getPlans()
+  new PagBankController(req, res, next).getPlans();
 });
 
 router.get('/pagbank/customers', (req, res, next) => {
-  new PagBankController(req, res, next).getCustomers()
+  new PagBankController(req, res, next).getCustomers();
 });
 
 router.get('/pagbank/customers/:cpf', (req, res, next) => {
-  new PagBankController(req, res, next).getByCpf()
+  new PagBankController(req, res, next).getByCpf();
+});
+
+router.post('/subscriptions/equalize-invoices', (req, res, next) => {
+  new PagBankController(req, res, next).equalizeInvoices();
 });
 
 export default router;

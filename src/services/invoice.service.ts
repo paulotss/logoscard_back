@@ -16,8 +16,12 @@ class InvoiceService {
   }
 
   public static async pay(id: number) {
-    const [affectedRows] = await InvoiceModel.update({ paid: true }, { where: { id } });
-    if (affectedRows === 0) throw new CustomError('Invoice not found or already paid', 404);
+    const [affectedRows] = await InvoiceModel.update(
+      { paid: true },
+      { where: { id } },
+    );
+    if (affectedRows === 0)
+      throw new CustomError('Invoice not found or already paid', 404);
     return { message: 'Invoice paid successfully' };
   }
 
@@ -54,7 +58,9 @@ class InvoiceService {
     return result;
   }
 
-  public static async payByPagBankSubscriptionId(pagbankSubscriptionId: string) {
+  public static async payByPagBankSubscriptionId(
+    pagbankSubscriptionId: string,
+  ) {
     const invoiceToPay = await InvoiceModel.findOne({
       where: {
         pagbankSubscriptionId,
@@ -68,8 +74,55 @@ class InvoiceService {
       await invoiceToPay.update({ paid: true });
       return invoiceToPay;
     } else {
-      console.warn(`Webhook: No pending invoice found for subscription ID: ${pagbankSubscriptionId}. It might have all been paid already.`);
+      console.warn(
+        `Webhook: No pending invoice found for subscription ID: ${pagbankSubscriptionId}. It might have all been paid already.`,
+      );
       return { message: 'No pending invoice to update.' };
+    }
+  }
+
+  public static async payCurrentMonthInvoicesBySubscriptionId(
+    pagbankSubscriptionId: string,
+  ) {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    // Find invoices for current month
+    const currentMonthInvoices = await InvoiceModel.findAll({
+      where: {
+        pagbankSubscriptionId,
+        paid: false,
+        expiration: {
+          [Op.and]: [
+            { [Op.gte]: new Date(currentYear, currentMonth, 1) },
+            { [Op.lt]: new Date(currentYear, currentMonth + 1, 1) },
+          ],
+        },
+      },
+    });
+
+    if (currentMonthInvoices.length > 0) {
+      // Update all found invoices to paid
+      const updatePromises = currentMonthInvoices.map(invoice =>
+        invoice.update({ paid: true }),
+      );
+      await Promise.all(updatePromises);
+
+      console.log(
+        `Marked ${currentMonthInvoices.length} current month invoices as paid for subscription: ${pagbankSubscriptionId}`,
+      );
+      return {
+        message: `${currentMonthInvoices.length} invoices marked as paid`,
+        invoices: currentMonthInvoices,
+      };
+    } else {
+      console.log(
+        `No unpaid current month invoices found for subscription: ${pagbankSubscriptionId}`,
+      );
+      return {
+        message: 'No current month invoices to update',
+      };
     }
   }
 
