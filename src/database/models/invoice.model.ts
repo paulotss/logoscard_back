@@ -3,11 +3,17 @@ import db from '.';
 
 class InvoiceModel extends Model {
   declare id: number;
+
   declare amount: number;
+
   declare expiration: Date;
+
   declare paid: boolean;
+
   declare method: string;
+
   declare userId: number;
+
   declare pagbankSubscriptionId: string;
 }
 

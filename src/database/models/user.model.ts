@@ -23,6 +23,10 @@ class UserModel extends Model {
   declare birthday: string;
 
   declare accessLevel: number;
+
+  declare referenceId?: string;
+
+  declare subscriptionId?: string;
 }
 
 UserModel.init(
@@ -68,6 +72,16 @@ UserModel.init(
     accessLevel: {
       allowNull: false,
       type: DataTypes.INTEGER,
+    },
+    referenceId: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      defaultValue: null,
+    },
+    subscriptionId: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      defaultValue: null,
     },
   },
   {

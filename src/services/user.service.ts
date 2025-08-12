@@ -121,6 +121,29 @@ class UserService {
     return result;
   }
 
+  public static async getDependentsCount(userId: number): Promise<number> {
+    const userData = await UserModel.findByPk(userId, {
+      include: [
+        {
+          model: AssignmentsModel,
+          as: 'assignments',
+          include: [
+            {
+              model: DependentModel,
+              as: 'dependents',
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!userData) {
+      return 0;
+    }
+
+    return (userData as any).assignments?.[0]?.dependents?.length || 0;
+  }
+
   public static async create(user: IUser) {
     const hashedPassword = await SecurityUtils.hashPassword(user.password);
 
@@ -166,6 +189,41 @@ class UserService {
         id: userId,
       },
     });
+    return result;
+  }
+
+  public static async updateSubscriptionData(
+    userId: number,
+    referenceId?: string,
+    subscriptionId?: string,
+  ) {
+    const updateData: { referenceId?: string; subscriptionId?: string } = {};
+
+    if (referenceId !== undefined) {
+      updateData.referenceId = referenceId;
+    }
+
+    if (subscriptionId !== undefined) {
+      updateData.subscriptionId = subscriptionId;
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      throw new CustomError(
+        'At least one field (referenceId or subscriptionId) must be provided',
+        400,
+      );
+    }
+    console.log('userId', userId);
+    const result = await UserModel.update(updateData, {
+      where: {
+        id: userId,
+      },
+    });
+
+    if (result[0] === 0) {
+      throw new CustomError('User not found or no changes made', 404);
+    }
+
     return result;
   }
 

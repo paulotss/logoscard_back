@@ -1,15 +1,23 @@
-FROM node
+FROM node:20
 
 WORKDIR /app
 
-COPY package*.json .
+# Give ownership of the workdir to the node user
+RUN chown node:node /app
 
-RUN ["npm", "i"]
+# Switch to non-root user for safety
+USER node
 
-COPY . .
+# Copy only the package files first
+COPY --chown=node:node package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application
+COPY --chown=node:node . .
 
 EXPOSE 3001
 
-RUN chown node:node /app
-
-USER node
+# Default command (used if docker-compose doesn't override it)
+CMD ["npm", "run", "dev"]

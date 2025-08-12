@@ -8,11 +8,11 @@ import CustomError from '../utils/CustomError';
 class SecurityMiddleware {
   // Rate limiting for payment endpoints
   public static paymentRateLimit = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: 30 * 1000, // 30 seconds
     max: 10, // limit each IP to 10 requests per windowMs
     message: {
       error: 'Too many payment requests, please try again later.',
-      retryAfter: 900, // 15 minutes in seconds
+      retryAfter: 30, // 30 seconds
     },
     standardHeaders: true,
     legacyHeaders: false,
@@ -24,11 +24,11 @@ class SecurityMiddleware {
 
   // Rate limiting for general API endpoints
   public static apiRateLimit = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: 30 * 1000, // 30 seconds
     max: 100, // limit each IP to 100 requests per windowMs
     message: {
       error: 'Too many API requests, please try again later.',
-      retryAfter: 900,
+      retryAfter: 30, // 30 seconds
     },
     standardHeaders: true,
     legacyHeaders: false,

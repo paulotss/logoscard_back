@@ -86,11 +86,16 @@ export interface PagBankCustomersResponse {
   };
 }
 
-
 // --- NOVAS INTERFACES (Para descrever o objeto de Assinatura completo) ---
 
 // Define os tipos de status possíveis para uma assinatura
-export type PagBankSubscriptionStatus = 'ACTIVE' | 'SUSPENDED' | 'CANCELED' | 'EXPIRED' | 'PENDING';
+export type PagBankSubscriptionStatus =
+  | 'ACTIVE'
+  | 'SUSPENDED'
+  | 'CANCELED'
+  | 'EXPIRED'
+  | 'PENDING'
+  | 'OVERDUE';
 
 // Descreve o objeto do plano associado à assinatura
 export interface PagBankPlan {
@@ -125,9 +130,63 @@ export interface PagBankSubscription {
 
 // Interface para a resposta da API ao criar uma assinatura
 export interface PagBankSubscriptionCreationResponse {
-    id: string;
-    status: string;
+  id: string;
+  status: string;
 }
 
+// --- INTERFACES PARA RESPOSTA DETALHADA DE ASSINATURA ---
 
+// Holder simplificado para cartão na resposta de assinatura
+export interface PagBankSimpleCardHolder {
+  name: string;
+}
 
+// Cartão simplificado para resposta de assinatura
+export interface PagBankSimpleCard {
+  token: string;
+  brand: string;
+  first_digits: string;
+  last_digits: string;
+  exp_month: string;
+  exp_year: string;
+  holder: PagBankSimpleCardHolder;
+}
+
+// Método de pagamento para resposta de assinatura
+export interface PagBankSubscriptionPaymentMethod {
+  type: 'CREDIT_CARD' | string;
+  card: PagBankSimpleCard;
+}
+
+// Customer simplificado para resposta de assinatura
+export interface PagBankSimpleCustomer {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// Interface para tentativas de cobrança (retries)
+export interface PagBankRetry {
+  attempt: 'FIRST' | 'SECOND' | 'THIRD' | string;
+  retried_at: string;
+  status: 'SCHEDULED' | 'PROCESSED' | 'FAILED' | string;
+}
+
+// Interface completa para resposta detalhada de assinatura
+export interface PagBankSubscriptionResponse {
+  id: string;
+  reference_id: string;
+  amount: PagBankAmount;
+  status: PagBankSubscriptionStatus;
+  plan: PagBankPlan;
+  payment_method: PagBankSubscriptionPaymentMethod[];
+  next_invoice_at: string;
+  billing_cycle: PagBankBillingCycle;
+  pro_rata: boolean;
+  customer: PagBankSimpleCustomer;
+  created_at: string;
+  updated_at: string;
+  retries: PagBankRetry[];
+  split_enabled: boolean;
+  links: PagBankLink[];
+}
