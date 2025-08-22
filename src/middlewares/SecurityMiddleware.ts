@@ -142,14 +142,13 @@ class SecurityMiddleware {
         throw new CustomError('Access token is required', 401);
       }
   
-      // CORREÇÃO: Tipamos a saída do 'verify' com nossa interface JwtPayload
+      // Saída do 'verify' tipada com nossa interface JwtPayload
       const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
       
-      // O TypeScript agora sabe que 'decoded' tem 'userId', 'email', etc.
-      // E o nosso arquivo express.d.ts permite adicionar 'user' ao 'req'.
+      // TypeScript sabe que 'decoded' tem 'userId', 'email', etc
+      // Arquivo express.d.ts permite adicionar 'user' ao 'req'
       req.user = decoded;
   
-      // CORREÇÃO: Usamos a propriedade correta 'userId' no log
       console.log(
         `[AUTH] User ${decoded.userId} authenticated for ${req.method} ${req.path}`,
       );

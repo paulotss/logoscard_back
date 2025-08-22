@@ -17,6 +17,7 @@ import depositRouter from './routes/deposit.route';
 import withdrawRouter from './routes/withdraw.route';
 import pagBankRouter from './routes/pagBank.route';
 import cardRouter from './routes/card.route';
+import dashboardRouter from './routes/dashboard.route';
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use('/api/deposits', depositRouter);
 app.use('/api/withdraws', withdrawRouter);
 app.use('/api/pagbank', pagBankRouter);
 app.use('/api/card', cardRouter);
+app.use('/api/dashboard', dashboardRouter);
 
 // --- ROTA DE HEALTH CHECK ---
 app.get('/health', (req, res) => {
