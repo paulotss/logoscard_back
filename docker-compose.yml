@@ -12,7 +12,8 @@ services:
     volumes:
       - ./:/app
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     command: npm run dev # ✅ override bash to run your dev server
 
   database:
@@ -23,3 +24,9 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=logoscard
+
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-p123456']
+      interval: 10s
+      timeout: 5s
+      retries: 5
