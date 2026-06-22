@@ -1,4 +1,4 @@
-FROM node
+FROM node:20
 
 WORKDIR /app
 
@@ -10,6 +10,4 @@ COPY . .
 
 EXPOSE 3001
 
-RUN chown node:node /app
-
-USER node
+CMD ["npm", "run", "dev"]
